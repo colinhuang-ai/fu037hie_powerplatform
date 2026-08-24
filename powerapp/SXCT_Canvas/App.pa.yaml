@@ -1,0 +1,61 @@
+App:
+  Properties:
+    Formulas: |-
+      =tblThietBi = Equipments;
+      tblLyDo = DowntimeReasons;
+      SoAnToan(t: Text): Number = IfError(Value(t, "en-US"), 0);
+    OnStart: |-
+      =ClearCollect(colThietBiDD, ForAll(tblThietBi As e, {Value: e.EquipmentName}));
+      ClearCollect(colLineDD, ForAll(tblThietBi As e, {Value: e.LineCode}));
+      ClearCollect(colLyDoDD, ForAll(tblLyDo As r, {Value: r.ReasonName}));
+      ClearCollect(
+          colNgay,
+          ForAll(
+              DailySummary As d,
+              {
+                  Ngay: d.SummaryDate,
+                  PlanTotal: SoAnToan(d.PlanTotal),
+                  ActualTotal: SoAnToan(d.ActualTotal),
+                  DefectTotal: SoAnToan(d.DefectTotal),
+                  GoodTotal: SoAnToan(d.GoodTotal),
+                  RunHoursTotal: SoAnToan(d.RunHoursTotal),
+                  DownHoursTotal: SoAnToan(d.DownHoursTotal),
+                  EnergyTotal: SoAnToan(d.EnergyTotal)
+              }
+          )
+      );
+      ClearCollect(
+          colThang,
+          ForAll(
+              MonthlySummary As m,
+              {
+                  YearMonth: m.YearMonth,
+                  Line: m.Line,
+                  PlanTotal: SoAnToan(m.PlanTotal),
+                  ActualTotal: SoAnToan(m.ActualTotal),
+                  DefectTotal: SoAnToan(m.DefectTotal),
+                  GoodTotal: SoAnToan(m.GoodTotal),
+                  DownHoursTotal: SoAnToan(m.DownHoursTotal),
+                  LogCount: SoAnToan(m.LogCount)
+              }
+          )
+      );
+      Set(varTuNgay, If(CountRows(colNgay) = 0, DateAdd(Today(), -90, TimeUnit.Days), First(SortByColumns(colNgay, "Ngay", SortOrder.Ascending)).Ngay));
+      Set(varDenNgay, If(CountRows(colNgay) = 0, Today(), First(SortByColumns(colNgay, "Ngay", SortOrder.Descending)).Ngay));
+      Set(varLsTuNgay, varTuNgay);
+      Set(varLsDenNgay, varDenNgay);
+      Set(varLsLine, "");
+      Set(varLsDaTai, false);
+      Set(varLogIDDangSua, "");
+      Set(varF_LogDate, Today());
+      Set(varF_ThietBi, "");
+      Set(varF_LyDo, "");
+      Set(varF_PlanQty, "");
+      Set(varF_ActualQty, "");
+      Set(varF_DefectQty, "");
+      Set(varF_RunHours, "");
+      Set(varF_DownHours, "");
+      Set(varF_EnergyKWh, "");
+      Set(varF_LaborHours, "")
+    StartScreen: =scrDashboard
+    Theme: =PowerAppsTheme

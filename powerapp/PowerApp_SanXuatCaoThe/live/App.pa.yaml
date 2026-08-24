@@ -1,0 +1,48 @@
+App:
+  Properties:
+    Theme: =PowerAppsTheme
+    OnStart: |
+      =Set(varThang, "Tất cả");
+      Set(varThietBi, "Tất cả");
+      Set(varLaMoi, true);
+      Set(varReset, false);
+      Set(varBanGhi, Defaults('Sản xuất cao thế'));
+      ClearCollect(colSanXuat, 'Sản xuất cao thế');
+      ClearCollect(
+          colLoc,
+          Filter(
+              colSanXuat,
+              (varThang = "Tất cả" || Text(Month('Ngày sản xuất')) = varThang) && (varThietBi = "Tất cả" || 'Thiết bị' = varThietBi)
+          )
+      );
+      ClearCollect(
+          colTB,
+          Sort(
+              AddColumns(
+                  GroupBy(
+                      AddColumns(colLoc, TenTB, 'Thiết bị', SoLuong, 'SL thực tế', SoLoiTB, 'SP lỗi'),
+                      TenTB,
+                      grp
+                  ),
+                  SanLuong, Sum(grp, SoLuong),
+                  SoLoi, Sum(grp, SoLoiTB)
+              ),
+              SanLuong,
+              SortOrder.Descending
+          )
+      );
+      ClearCollect(
+          colThang,
+          Sort(
+              AddColumns(
+                  GroupBy(
+                      AddColumns(colLoc, ThangSo, Month('Ngày sản xuất'), SoLuong, 'SL thực tế'),
+                      ThangSo,
+                      grp
+                  ),
+                  SanLuong, Sum(grp, SoLuong)
+              ),
+              ThangSo,
+              SortOrder.Ascending
+          )
+      )

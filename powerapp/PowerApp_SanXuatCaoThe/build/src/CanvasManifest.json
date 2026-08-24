@@ -1,0 +1,57 @@
+{
+  "FormatVersion": "0.30",
+  "ScreenOrder": [
+    "scrDashboard",
+    "scrNhapLieu"
+  ],
+  "ComponentIndexes": {},
+  "Header": {
+    "DocVersion": "1.331",
+    "MinVersionToLoad": "1.317",
+    "MSAppStructureVersion": "2.0",
+    "Name": "Sản xuất cao thế",
+    "AnalysisOptions": {
+      "DataflowAnalysisEnabled": true,
+      "IsDataflowAnalysisSupported": true,
+      "IsMidBuild": false
+    }
+  },
+  "Properties": {
+    "Author": "",
+    "Name": "Sản xuất cao thế",
+    "Id": "1d0a6f2c-7c41-4a58-9a1e-3f2b8c7d0011",
+    "FileID": "5e2b91d7-0c34-4a1f-88b2-6d4c9e7f0022",
+    "DocumentLayoutWidth": 1366,
+    "DocumentLayoutHeight": 768,
+    "DocumentLayoutOrientation": "landscape",
+    "DocumentLayoutScaleToFit": true,
+    "DocumentLayoutMaintainAspectRatio": true,
+    "DocumentLayoutLockOrientation": true,
+    "DocumentAppType": "DesktopOrTablet",
+    "DocumentType": "App",
+    "AppCreationSource": "AppFromScratch",
+    "AppDescription": "Quản lý và theo dõi sản xuất thiết bị điện cao thế",
+    "DefaultConnectedDataSourceMaxGetRowsCount": 2000,
+    "ContainsThirdPartyPcfControls": false,
+    "OriginatingVersion": "1.331",
+    "AppPreviewFlagsMap": {
+      "nativecdsexperimental": true,
+      "usedisplaynamemetadata": true,
+      "useguiddatatypes": true,
+      "enablerowscopeonetomany": true,
+      "enhanceddelegation": true,
+      "errorhandling": true,
+      "reliableconcurrent": true,
+      "projectionmapping": true,
+      "usenonblockingonstartrule": true,
+      "delayloadscreens": true,
+      "enableappembedding": true,
+      "improvedwarningexperience": true
+    }
+  },
+  "PublishInfo": {
+    "AppName": "Sản xuất cao thế",
+    "BackgroundColor": "RGBA(11,60,109,1)"
+  },
+  "AppCheckerResult": null
+}

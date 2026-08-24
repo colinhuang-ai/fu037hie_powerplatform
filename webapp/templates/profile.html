@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Hồ Sơ Cá Nhân & Đổi Mật Khẩu{% endblock %}
+{% block page_title %}Thông Tin Cá Nhân & Bảo Mật{% endblock %}
+{% block page_subtitle %}Quản lý thông tin tài khoản và đổi mật khẩu đăng nhập hệ thống{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card card-primary card-outline shadow-sm">
+            <div class="card-header bg-white">
+                <h3 class="card-title text-dark font-weight-bold">
+                    <i class="fa-solid fa-id-card mr-2 text-primary"></i>
+                    Hồ Sơ Tài Khoản Của Bạn
+                </h3>
+            </div>
+            <form action="{{ url_for('profile') }}" method="POST">
+                <div class="card-body p-4">
+                    <!-- User Profile Header -->
+                    <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                        <div class="user-avatar-lg mr-3">
+                            {{ user.full_name[:1] if user.full_name else 'U' }}
+                        </div>
+                        <div>
+                            <h4 class="font-weight-bold text-dark mb-1">{{ user.full_name }}</h4>
+                            <p class="text-muted small mb-2">Tên đăng nhập: <code>{{ user.username }}</code></p>
+                            <span class="badge {% if user.role == 'admin' %}badge-danger{% elif user.role == 'manager' %}badge-primary{% else %}badge-info{% endif %}">
+                                {% if user.role == 'admin' %}Quản trị viên
+                                {% elif user.role == 'manager' %}Quản lý sản xuất
+                                {% else %}Công nhân đứng máy
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="full_name" class="font-weight-bold"><i class="fa-solid fa-user mr-1 text-primary"></i> Họ và tên</label>
+                        <input type="text" id="full_name" name="full_name" class="form-control" value="{{ user.full_name }}" required>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="email" class="font-weight-bold"><i class="fa-solid fa-envelope mr-1 text-info"></i> Email liên hệ</label>
+                        <input type="email" id="email" name="email" class="form-control" value="{{ user.email if user.email else '' }}" placeholder="email@maydien.vn">
+                    </div>
+
+                    <div class="card bg-light border p-3 mb-4">
+                        <h5 class="text-warning font-weight-bold mb-3 small d-flex align-items-center">
+                            <i class="fa-solid fa-key mr-2"></i> ĐỔI MẬT KHẨU ĐĂNG NHẬP
+                        </h5>
+                        
+                        <div class="form-group mb-3">
+                            <label for="current_password" class="font-weight-bold small">Mật khẩu hiện tại * (Bắt buộc để lưu thay đổi)</label>
+                            <input type="password" id="current_password" name="current_password" class="form-control form-control-sm" placeholder="Nhập mật khẩu hiện tại..." required>
+                        </div>
+
+                        <div class="form-group mb-0">
+                            <label for="new_password" class="font-weight-bold small">Mật khẩu mới (Để trống nếu không đổi)</label>
+                            <input type="password" id="new_password" name="new_password" class="form-control form-control-sm" placeholder="Nhập mật khẩu mới...">
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary font-weight-bold px-4 shadow-sm">
+                            <i class="fa-solid fa-check mr-1"></i> Lưu Thông Tin Cập Nhật
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

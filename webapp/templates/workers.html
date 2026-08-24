@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}Quản Lý Công Nhân Đứng Máy Chế Tạo Máy Điện{% endblock %}
+{% block page_title %}Danh Sách Công Nhân Đứng Máy{% endblock %}
+{% block page_subtitle %}Quản lý nhân sự vận hành, bậc thợ, theo dõi năng suất và tỷ lệ lỗi của từng công nhân{% endblock %}
+
+{% block topbar_actions %}
+{% if current_user.role in ['admin', 'manager'] %}
+<button type="button" class="btn btn-primary btn-sm font-weight-bold" onclick="openModal('addWorkerModal')">
+    <i class="fa-solid fa-user-plus mr-1"></i> Thêm Công Nhân Mới
+</button>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary card-outline shadow-sm">
+    <div class="card-header bg-white">
+        <h3 class="card-title text-dark font-weight-bold">
+            <i class="fa-solid fa-users-gear mr-2 text-primary"></i>
+            Đội Ngũ Công Nhân Vận Hành Máy Điện ({{ workers|length }} người)
+        </h3>
+    </div>
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-bordered table-striped table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Mã CN</th>
+                    <th>Họ và tên</th>
+                    <th>Ca trực mặc định</th>
+                    <th>Trình độ / Bậc thợ</th>
+                    <th>Số điện thoại</th>
+                    <th class="text-right">Ca đã trực</th>
+                    <th class="text-right">Tổng sản lượng</th>
+                    <th class="text-right">Tỷ lệ lỗi TB</th>
+                    <th>Trạng thái</th>
+                    {% if current_user.role in ['admin', 'manager'] %}
+                    <th class="text-center">Thao tác</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for w in workers %}
+                <tr>
+                    <td><span class="font-weight-bold text-primary">{{ w.worker_code }}</span></td>
+                    <td class="font-weight-bold text-dark">{{ w.full_name }}</td>
+                    <td><span class="badge badge-info">{{ w.shift }}</span></td>
+                    <td><span class="badge badge-light border text-purple font-weight-bold">{{ w.skill_level }}</span></td>
+                    <td>{{ w.phone if w.phone else '—' }}</td>
+                    <td class="text-right font-weight-bold">{{ w.total_shifts }} ca</td>
+                    <td class="text-right text-success font-weight-bold">{{ "{:,}".format(w.total_produced) }} máy</td>
+                    <td class="text-right">
+                        {% if w.defect_rate is not none %}
+                            <span class="rate-badge {% if w.defect_rate <= 3.0 %}rate-good{% elif w.defect_rate <= 5.0 %}rate-warning{% else %}rate-danger{% endif %}">
+                                {{ w.defect_rate }}%
+                            </span>
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if w.active == 1 %}
+                            <span class="badge badge-success"><i class="fas fa-check-circle mr-1"></i> Đang làm</span>
+                        {% else %}
+                            <span class="badge badge-danger"><i class="fas fa-user-slash mr-1"></i> Nghỉ việc</span>
+                        {% endif %}
+                    </td>
+                    {% if current_user.role in ['admin', 'manager'] %}
+                    <td class="text-center text-nowrap">
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-default text-primary" title="Chỉnh sửa"
+                                onclick='editWorker({{ dict(w)|tojson|safe }})'>
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            {% if current_user.role == 'admin' %}
+                            <form action="{{ url_for('worker_delete', worker_id=w.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa công nhân này?');">
+                                <button type="submit" class="btn btn-default text-danger" title="Xóa">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL THÊM CÔNG NHÂN -->
+<div class="modal fade" id="addWorkerModal" tabindex="-1" role="dialog" aria-labelledby="addWorkerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title font-weight-bold" id="addWorkerModalLabel">
+                    <i class="fa-solid fa-user-plus mr-2"></i> Thêm Công Nhân Mới
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ url_for('worker_add') }}" method="POST">
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="worker_code" class="font-weight-bold">Mã công nhân *</label>
+                            <input type="text" id="worker_code" name="worker_code" class="form-control" placeholder="VD: CN-009" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="full_name" class="font-weight-bold">Họ và tên *</label>
+                            <input type="text" id="full_name" name="full_name" class="form-control" placeholder="VD: Nguyễn Văn A" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="shift_w" class="font-weight-bold">Ca trực mặc định</label>
+                            <select id="shift_w" name="shift" class="form-control">
+                                <option value="Ca 1 (06:00 - 14:00)">Ca 1 (06:00 - 14:00)</option>
+                                <option value="Ca 2 (14:00 - 22:00)">Ca 2 (14:00 - 22:00)</option>
+                                <option value="Ca 3 (22:00 - 06:00)">Ca 3 (22:00 - 06:00)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="skill_level" class="font-weight-bold">Bậc thợ / Tay nghề</label>
+                            <select id="skill_level" name="skill_level" class="form-control">
+                                <option value="Bậc 1/7">Bậc 1/7 (Học việc)</option>
+                                <option value="Bậc 2/7">Bậc 2/7 (Sơ cấp)</option>
+                                <option value="Bậc 3/7" selected>Bậc 3/7 (Trung cấp)</option>
+                                <option value="Bậc 4/7">Bậc 4/7 (Khá)</option>
+                                <option value="Bậc 5/7">Bậc 5/7 (Lành nghề)</option>
+                                <option value="Bậc 6/7">Bậc 6/7 (Chuyên gia)</option>
+                                <option value="Bậc 7/7">Bậc 7/7 (Nghệ nhân / Trưởng ca)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="font-weight-bold">Số điện thoại liên hệ</label>
+                        <input type="text" id="phone" name="phone" class="form-control" placeholder="VD: 0987654321">
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold"><i class="fa-solid fa-save mr-1"></i> Lưu công nhân</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SỬA CÔNG NHÂN -->
+<div class="modal fade" id="editWorkerModal" tabindex="-1" role="dialog" aria-labelledby="editWorkerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title font-weight-bold" id="editWorkerModalLabel">
+                    <i class="fa-solid fa-pen-to-square mr-2"></i> Chỉnh Sửa Thông Tin Công Nhân
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editWorkerForm" method="POST">
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="edit_worker_code" class="font-weight-bold">Mã công nhân *</label>
+                            <input type="text" id="edit_worker_code" name="worker_code" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="edit_full_name" class="font-weight-bold">Họ và tên *</label>
+                            <input type="text" id="edit_full_name" name="full_name" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="edit_shift" class="font-weight-bold">Ca trực</label>
+                            <select id="edit_shift" name="shift" class="form-control">
+                                <option value="Ca 1 (06:00 - 14:00)">Ca 1 (06:00 - 14:00)</option>
+                                <option value="Ca 2 (14:00 - 22:00)">Ca 2 (14:00 - 22:00)</option>
+                                <option value="Ca 3 (22:00 - 06:00)">Ca 3 (22:00 - 06:00)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="edit_skill_level" class="font-weight-bold">Bậc thợ</label>
+                            <select id="edit_skill_level" name="skill_level" class="form-control">
+                                <option value="Bậc 1/7">Bậc 1/7</option>
+                                <option value="Bậc 2/7">Bậc 2/7</option>
+                                <option value="Bậc 3/7">Bậc 3/7</option>
+                                <option value="Bậc 4/7">Bậc 4/7</option>
+                                <option value="Bậc 5/7">Bậc 5/7</option>
+                                <option value="Bậc 6/7">Bậc 6/7</option>
+                                <option value="Bậc 7/7">Bậc 7/7</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="edit_phone" class="font-weight-bold">Số điện thoại</label>
+                            <input type="text" id="edit_phone" name="phone" class="form-control">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="edit_active" class="font-weight-bold">Trạng thái công việc</label>
+                            <select id="edit_active" name="active" class="form-control">
+                                <option value="1">Đang làm việc</option>
+                                <option value="0">Tạm nghỉ / Đã nghỉ</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-warning font-weight-bold"><i class="fa-solid fa-save mr-1"></i> Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

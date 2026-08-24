@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Quản Trị Người Dùng & Phân Quyền Hệ Thống{% endblock %}
+{% block page_title %}Quản Lý Tài Khoản & Phân Quyền Người Dùng{% endblock %}
+{% block page_subtitle %}Quản trị viên quản lý danh sách tài khoản, cấp quyền truy cập Admin, Quản lý và Công nhân{% endblock %}
+
+{% block topbar_actions %}
+<button type="button" class="btn btn-primary btn-sm font-weight-bold" onclick="openModal('addUserModal')">
+    <i class="fa-solid fa-user-plus mr-1"></i> Tạo Tài Khoản Mới
+</button>
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary card-outline shadow-sm">
+    <div class="card-header bg-white">
+        <h3 class="card-title text-dark font-weight-bold">
+            <i class="fa-solid fa-user-shield mr-2 text-primary"></i>
+            Danh Sách Người Dùng Trong Hệ Thống ({{ users|length }} tài khoản)
+        </h3>
+    </div>
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-bordered table-striped table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Họ và tên</th>
+                    <th>Vai trò / Phân quyền</th>
+                    <th>Email</th>
+                    <th>Ngày tạo</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td class="font-weight-bold">#{{ u.id }}</td>
+                    <td><span class="badge badge-light border text-dark font-weight-bold"><code>{{ u.username }}</code></span></td>
+                    <td class="font-weight-bold text-dark">{{ u.full_name }}</td>
+                    <td>
+                        {% if u.role == 'admin' %}
+                            <span class="badge badge-danger"><i class="fa-solid fa-crown mr-1"></i> Quản trị viên (Admin)</span>
+                        {% elif u.role == 'manager' %}
+                            <span class="badge badge-primary"><i class="fa-solid fa-user-tie mr-1"></i> Quản lý SX (Manager)</span>
+                        {% else %}
+                            <span class="badge badge-info"><i class="fa-solid fa-helmet-safety mr-1"></i> Công nhân (Worker)</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ u.email if u.email else '—' }}</td>
+                    <td>{{ u.created_at[:10] }}</td>
+                    <td class="text-center text-nowrap">
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-default text-primary" title="Chỉnh sửa"
+                                onclick='editUser({{ dict(u)|tojson|safe }})'>
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            {% if u.id != current_user.id %}
+                            <form action="{{ url_for('user_delete', user_id=u.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa tài khoản này?');">
+                                <button type="submit" class="btn btn-default text-danger" title="Xóa tài khoản">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL THÊM USER MỚI -->
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title font-weight-bold" id="addUserModalLabel">
+                    <i class="fa-solid fa-user-plus mr-2"></i> Tạo Tài Khoản Người Dùng Mới
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ url_for('user_add') }}" method="POST">
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="username_add" class="font-weight-bold">Tên đăng nhập *</label>
+                            <input type="text" id="username_add" name="username" class="form-control" placeholder="VD: vanhung" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="password_add" class="font-weight-bold">Mật khẩu khởi tạo *</label>
+                            <input type="password" id="password_add" name="password" class="form-control" placeholder="Tối thiểu 6 ký tự..." required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="full_name_add" class="font-weight-bold">Họ và tên đầy đủ *</label>
+                        <input type="text" id="full_name_add" name="full_name" class="form-control" placeholder="VD: Nguyễn Văn Hùng" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="role_add" class="font-weight-bold">Vai trò / Phân quyền</label>
+                            <select id="role_add" name="role" class="form-control">
+                                <option value="worker">Công nhân / Kỹ thuật viên (Nhập nhật ký ca)</option>
+                                <option value="manager">Quản lý sản xuất (Xem báo cáo, duyệt logs, quản lý máy móc)</option>
+                                <option value="admin">Quản trị viên tối cao (Toàn quyền hệ thống & User)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="email_add" class="font-weight-bold">Địa chỉ Email</label>
+                            <input type="email" id="email_add" name="email" class="form-control" placeholder="VD: hung.nv@maydien.vn">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold"><i class="fa-solid fa-save mr-1"></i> Tạo tài khoản</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SỬA USER -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title font-weight-bold" id="editUserModalLabel">
+                    <i class="fa-solid fa-user-pen mr-2"></i> Chỉnh Sửa Tài Khoản Người Dùng
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editUserForm" method="POST">
+                <div class="modal-body p-4">
+                    <div class="form-group">
+                        <label class="font-weight-bold">Tên đăng nhập</label>
+                        <input type="text" id="edit_username_display" class="form-control bg-light" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_full_name" class="font-weight-bold">Họ và tên đầy đủ *</label>
+                        <input type="text" id="edit_full_name" name="full_name" class="form-control" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="edit_role" class="font-weight-bold">Vai trò / Phân quyền</label>
+                            <select id="edit_role" name="role" class="form-control">
+                                <option value="worker">Công nhân / Kỹ thuật viên</option>
+                                <option value="manager">Quản lý sản xuất</option>
+                                <option value="admin">Quản trị viên (Admin)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="edit_email" class="font-weight-bold">Địa chỉ Email</label>
+                            <input type="email" id="edit_email" name="email" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_password" class="font-weight-bold">Đặt lại mật khẩu mới (Để trống nếu không đổi)</label>
+                        <input type="password" id="edit_password" name="password" class="form-control" placeholder="Nhập mật khẩu mới nếu muốn đổi...">
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-warning font-weight-bold"><i class="fa-solid fa-save mr-1"></i> Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

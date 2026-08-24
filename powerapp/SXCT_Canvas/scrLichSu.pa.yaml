@@ -1,0 +1,503 @@
+Screens:
+  scrLichSu:
+    Properties:
+      Fill: =RGBA(244, 246, 249, 1)
+      LoadingSpinnerColor: =RGBA(11, 87, 148, 1)
+      OnVisible: =Set(varXoaID, "")
+    Children:
+      - lsRoot:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(244, 246, 249, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =12
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - lsHeader:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(11, 87, 148, 1)
+                  FillPortions: =0
+                  Height: =74
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =12
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =12
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - lsTitle:
+                      Control: Text
+                      Properties:
+                        AutoHeight: =true
+                        FillPortions: =1
+                        FontColor: =RGBA(255, 255, 255, 1)
+                        LayoutMinWidth: =0
+                        Size: =20
+                        Text: ="Lịch sử nhật ký"
+                        VerticalAlign: =VerticalAlign.Middle
+                        Weight: ='TextCanvas.Weight'.Semibold
+            - lsLocCard:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =8
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =14
+                  PaddingLeft: =14
+                  PaddingRight: =14
+                  PaddingTop: =14
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - lsLocHang:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        LayoutWrap: =true
+                      Children:
+                        - lsLineNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =230
+                            Children:
+                              - lsLineLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Dây chuyền *"
+                                    Wrap: =false
+                              - lsLine:
+                                  Control: ModernDropdown
+                                  Properties:
+                                    AccessibleLabel: ="Chọn dây chuyền cần xem lịch sử"
+                                    Appearance: =Appearance.Outline
+                                    Height: =44
+                                    ItemDisplayText: =ThisItem.Value
+                                    Items: =colLineDD
+                                    LayoutMinWidth: =0
+                                    OnChange: |-
+                                      =Clear(colLichSu);
+                                      Set(varLsDaTai, false);
+                                      Set(varXoaID, "")
+                        - lsTuNgayNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =200
+                            Children:
+                              - lsTuNgayLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Từ ngày"
+                                    Wrap: =false
+                              - lsTuNgay:
+                                  Control: DatePicker
+                                  Properties:
+                                    AccessibleLabel: ="Chọn ngày bắt đầu khoảng lọc lịch sử"
+                                    Appearance: ='DatePickerCanvas.Appearance'.Outline
+                                    Format: ='DatePickerCanvas.Format'.Short
+                                    Height: =44
+                                    LayoutMinWidth: =0
+                                    OnChange: =Set(varLsTuNgay, lsTuNgay.SelectedDate)
+                                    SelectedDate: =varLsTuNgay
+                        - lsDenNgayNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =200
+                            Children:
+                              - lsDenNgayLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Đến ngày"
+                                    Wrap: =false
+                              - lsDenNgay:
+                                  Control: DatePicker
+                                  Properties:
+                                    AccessibleLabel: ="Chọn ngày kết thúc khoảng lọc lịch sử"
+                                    Appearance: ='DatePickerCanvas.Appearance'.Outline
+                                    Format: ='DatePickerCanvas.Format'.Short
+                                    Height: =44
+                                    LayoutMinWidth: =0
+                                    OnChange: =Set(varLsDenNgay, lsDenNgay.SelectedDate)
+                                    SelectedDate: =varLsDenNgay
+                        - lsTaiNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =160
+                            Children:
+                              - lsTaiLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(255, 255, 255, 1)
+                                    Size: =12
+                                    Text: ="."
+                                    Wrap: =false
+                              - lsTai:
+                                  Control: Button
+                                  Properties:
+                                    AccessibleLabel: ="Tải dữ liệu nhật ký của dây chuyền đã chọn"
+                                    Appearance: ='ButtonCanvas.Appearance'.Primary
+                                    DisplayMode: =If(IsBlank(lsLine.Selected.Value), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Height: =44
+                                    LayoutMinWidth: =0
+                                    OnSelect: |-
+                                      =Set(varLsLine, lsLine.Selected.Value);
+                                      Set(varXoaID, "");
+                                      ClearCollect(colLichSu, Filter(ProductionLog, Line = lsLine.Selected.Value));
+                                      Set(varLsDaTai, true);
+                                      Notify(
+                                          "Đã tải " & CountRows(colLichSu) & " dòng của dây chuyền " & lsLine.Selected.Value,
+                                          NotificationType.Information
+                                      )
+                                    Text: ="Tải dữ liệu"
+                  - lsCanhBao:
+                      Control: Text
+                      Properties:
+                        AutoHeight: =true
+                        FontColor: =RGBA(103, 114, 126, 1)
+                        Size: =12
+                        Text: ="Phải chọn dây chuyền trước khi tải. Connector Excel chỉ lọc được theo cột chữ, nên app tải trọn dây chuyền (khoảng 212 dòng) rồi lọc ngày trong bộ nhớ — số liệu vì vậy luôn đầy đủ."
+            - lsTomTat:
+                Control: Text
+                Properties:
+                  AutoHeight: =true
+                  FontColor: =RGBA(29, 35, 42, 1)
+                  Text: |-
+                    =If(
+                        !varLsDaTai,
+                        "Chưa tải dữ liệu.",
+                        "Dây chuyền " & varLsLine & " — hiển thị " &
+                        CountRows(Filter(colLichSu, LogDate >= varLsTuNgay, LogDate <= varLsDenNgay)) &
+                        " trên tổng " & CountRows(colLichSu) & " dòng đã tải."
+                    )
+                  Weight: ='TextCanvas.Weight'.Semibold
+            - lsGallery:
+                Control: Gallery
+                Variant: Vertical
+                Properties:
+                  AccessibleLabel: ="Danh sách dòng nhật ký của dây chuyền đã chọn"
+                  FillPortions: =0
+                  Height: =440
+                  Items: |-
+                    =SortByColumns(
+                        Filter(colLichSu, LogDate >= varLsTuNgay, LogDate <= varLsDenNgay),
+                        "LogDate",
+                        SortOrder.Descending
+                    )
+                  LayoutMinHeight: =0
+                  Selectable: =false
+                  TabIndex: =0
+                  TemplatePadding: =6
+                  TemplateSize: =If(Parent.Width < 820, 210, 74)
+                  Visible: =varLsDaTai
+                Children:
+                  - lsRow:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        Height: =Parent.TemplateHeight
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =If(Parent.TemplateWidth < 820, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                        LayoutGap: =8
+                        PaddingBottom: =10
+                        PaddingLeft: =12
+                        PaddingRight: =12
+                        PaddingTop: =10
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.TemplateWidth
+                      Children:
+                        - lsRowNgay:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(29, 35, 42, 1)
+                              LayoutMinWidth: =0
+                              Text: =Text(ThisItem.LogDate, "dd/mm/yyyy")
+                              VerticalAlign: =VerticalAlign.Middle
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =110
+                              Wrap: =false
+                        - lsRowThietBi:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FillPortions: =1
+                              FontColor: =RGBA(29, 35, 42, 1)
+                              LayoutMinWidth: =0
+                              Text: =ThisItem.Equipment
+                              VerticalAlign: =VerticalAlign.Middle
+                              Width: =220
+                        - lsRowSanLuong:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(103, 114, 126, 1)
+                              LayoutMinWidth: =0
+                              Size: =13
+                              Text: ="KH " & ThisItem.PlanQty & " / TH " & ThisItem.ActualQty & " / lỗi " & ThisItem.DefectQty
+                              VerticalAlign: =VerticalAlign.Middle
+                              Width: =220
+                              Wrap: =false
+                        - lsRowDat:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(29, 35, 42, 1)
+                              LayoutMinWidth: =0
+                              Text: =Text(SoAnToan(ThisItem.AchievePct) * 100, "0.0", "en-US") & "%"
+                              VerticalAlign: =VerticalAlign.Middle
+                              Width: =80
+                              Wrap: =false
+                        - lsRowStatus:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: |-
+                                =If(
+                                    ThisItem.Status = "Đạt",
+                                    RGBA(16, 124, 16, 1),
+                                    If(ThisItem.Status = "Dưới kế hoạch", RGBA(184, 118, 0, 1), RGBA(196, 43, 28, 1))
+                                )
+                              LayoutMinWidth: =0
+                              Size: =13
+                              Text: =ThisItem.Status
+                              VerticalAlign: =VerticalAlign.Middle
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =130
+                              Wrap: =false
+                        - lsRowNut:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =6
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =230
+                            Children:
+                              - lsRowSua:
+                                  Control: Button
+                                  Properties:
+                                    AccessibleLabel: ="Sửa dòng nhật ký này"
+                                    Appearance: ='ButtonCanvas.Appearance'.Outline
+                                    FillPortions: =1
+                                    FontSize: =13
+                                    Height: =44
+                                    LayoutMinWidth: =0
+                                    OnSelect: |-
+                                      =Set(varLogIDDangSua, ThisItem.LogID);
+                                      Set(varF_LogDate, ThisItem.LogDate);
+                                      Set(varF_ThietBi, ThisItem.Equipment);
+                                      Set(varF_LyDo, ThisItem.DowntimeReason);
+                                      Set(varF_PlanQty, ThisItem.PlanQty);
+                                      Set(varF_ActualQty, ThisItem.ActualQty);
+                                      Set(varF_DefectQty, ThisItem.DefectQty);
+                                      Set(varF_RunHours, ThisItem.RunHours);
+                                      Set(varF_DownHours, ThisItem.DownHours);
+                                      Set(varF_EnergyKWh, ThisItem.EnergyKWh);
+                                      Set(varF_LaborHours, ThisItem.LaborHours);
+                                      Navigate(scrNhapLog)
+                                    Text: ="Sửa"
+                                    Visible: =varXoaID <> ThisItem.LogID
+                              - lsRowXoa:
+                                  Control: Button
+                                  Properties:
+                                    AccessibleLabel: ="Xoá dòng nhật ký này"
+                                    Appearance: ='ButtonCanvas.Appearance'.Subtle
+                                    FillPortions: =1
+                                    FontColor: =RGBA(196, 43, 28, 1)
+                                    FontSize: =13
+                                    Height: =44
+                                    LayoutMinWidth: =0
+                                    OnSelect: =Set(varXoaID, ThisItem.LogID)
+                                    Text: ="Xoá"
+                                    Visible: =varXoaID <> ThisItem.LogID
+                              - lsRowXacNhan:
+                                  Control: Button
+                                  Properties:
+                                    AccessibleLabel: ="Xác nhận xoá dòng nhật ký này"
+                                    Appearance: ='ButtonCanvas.Appearance'.Primary
+                                    FillPortions: =1
+                                    FontSize: =13
+                                    Height: =44
+                                    LayoutMinWidth: =0
+                                    OnSelect: |-
+                                      =Remove(ProductionLog, LookUp(ProductionLog, LogID = ThisItem.LogID));
+                                      If(
+                                          IsEmpty(Errors(ProductionLog)),
+                                          Remove(colLichSu, ThisItem);
+                                          Notify("Đã xoá dòng nhật ký.", NotificationType.Success),
+                                          Notify(
+                                              "Xoá thất bại: " & First(Errors(ProductionLog)).Message,
+                                              NotificationType.Error
+                                          )
+                                      );
+                                      Set(varXoaID, "")
+                                    Text: ="Xác nhận"
+                                    Visible: =varXoaID = ThisItem.LogID
+                              - lsRowHuyXoa:
+                                  Control: Button
+                                  Properties:
+                                    AccessibleLabel: ="Huỷ xoá dòng nhật ký này"
+                                    Appearance: ='ButtonCanvas.Appearance'.Subtle
+                                    FillPortions: =1
+                                    FontSize: =13
+                                    Height: =44
+                                    LayoutMinWidth: =0
+                                    OnSelect: =Set(varXoaID, "")
+                                    Text: ="Huỷ"
+                                    Visible: =varXoaID = ThisItem.LogID
+            - lsRong:
+                Control: Text
+                Properties:
+                  AutoHeight: =true
+                  FontColor: =RGBA(103, 114, 126, 1)
+                  Text: |-
+                    =If(
+                        !varLsDaTai,
+                        "Chọn dây chuyền rồi bấm Tải dữ liệu để xem nhật ký.",
+                        "Không có dòng nào trong khoảng ngày đã chọn."
+                    )
+                  Visible: =!varLsDaTai || CountRows(Filter(colLichSu, LogDate >= varLsTuNgay, LogDate <= varLsDenNgay)) = 0
+            - lsNav:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =68
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =8
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =10
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =10
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - lsNavDashboard:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Mở màn hình Tổng quan"
+                        Appearance: ='ButtonCanvas.Appearance'.Subtle
+                        FillPortions: =1
+                        Height: =48
+                        LayoutMinWidth: =0
+                        OnSelect: =Navigate(scrDashboard)
+                        Text: ="Tổng quan"
+                  - lsNavNhap:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Mở màn hình Nhập nhật ký"
+                        Appearance: ='ButtonCanvas.Appearance'.Subtle
+                        FillPortions: =1
+                        Height: =48
+                        LayoutMinWidth: =0
+                        OnSelect: |-
+                          =Set(varLogIDDangSua, "");
+                          Set(varF_LogDate, Today());
+                          Set(varF_ThietBi, "");
+                          Set(varF_LyDo, "");
+                          Set(varF_PlanQty, "");
+                          Set(varF_ActualQty, "");
+                          Set(varF_DefectQty, "");
+                          Set(varF_RunHours, "");
+                          Set(varF_DownHours, "");
+                          Set(varF_EnergyKWh, "");
+                          Set(varF_LaborHours, "");
+                          Navigate(scrNhapLog)
+                        Text: ="Nhập nhật ký"
+                  - lsNavLichSu:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Đang ở màn hình Lịch sử nhật ký"
+                        Appearance: ='ButtonCanvas.Appearance'.Primary
+                        FillPortions: =1
+                        Height: =48
+                        LayoutMinWidth: =0
+                        Text: ="Lịch sử"

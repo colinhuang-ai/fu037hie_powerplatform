@@ -1,0 +1,772 @@
+Screens:
+  scrNhapLog:
+    Properties:
+      Fill: =RGBA(244, 246, 249, 1)
+      LoadingSpinnerColor: =RGBA(11, 87, 148, 1)
+    Children:
+      - nlRoot:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(244, 246, 249, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =12
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - nlHeader:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(11, 87, 148, 1)
+                  FillPortions: =0
+                  Height: =74
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =12
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =12
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - nlTitle:
+                      Control: Text
+                      Properties:
+                        AutoHeight: =true
+                        FillPortions: =1
+                        FontColor: =RGBA(255, 255, 255, 1)
+                        LayoutMinWidth: =0
+                        Size: =20
+                        Text: =If(varLogIDDangSua = "", "Nhập nhật ký sản xuất", "Sửa dòng nhật ký")
+                        VerticalAlign: =VerticalAlign.Middle
+                        Weight: ='TextCanvas.Weight'.Semibold
+                  - nlHuySua:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Huỷ chế độ sửa và quay lại nhập mới"
+                        Appearance: ='ButtonCanvas.Appearance'.Secondary
+                        Height: =44
+                        LayoutMinWidth: =0
+                        OnSelect: |-
+                          =Set(varLogIDDangSua, "");
+                          Set(varF_LogDate, Today());
+                          Set(varF_ThietBi, "");
+                          Set(varF_LyDo, "");
+                          Set(varF_PlanQty, "");
+                          Set(varF_ActualQty, "");
+                          Set(varF_DefectQty, "");
+                          Set(varF_RunHours, "");
+                          Set(varF_DownHours, "");
+                          Set(varF_EnergyKWh, "");
+                          Set(varF_LaborHours, "");
+                          Reset(nlNgay);
+                          Reset(nlThietBi);
+                          Reset(nlLyDo);
+                          Reset(nlPlanQty);
+                          Reset(nlActualQty);
+                          Reset(nlDefectQty);
+                          Reset(nlRunHours);
+                          Reset(nlDownHours);
+                          Reset(nlEnergyKWh);
+                          Reset(nlLaborHours)
+                        Text: ="Huỷ sửa"
+                        Visible: =varLogIDDangSua <> ""
+                        Width: =120
+            - nlFormCard:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =If(Self.Width < 832, 944, 272)
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =12
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - nlHang1:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 800, 240, 72)
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =If(Parent.Width < 800, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                        LayoutGap: =12
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                      Children:
+                        - nlNgayNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =230
+                            Children:
+                              - nlNgayLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Ngày sản xuất *"
+                                    Wrap: =false
+                              - nlNgay:
+                                  Control: DatePicker
+                                  Properties:
+                                    AccessibleLabel: ="Chọn ngày sản xuất của dòng nhật ký"
+                                    Appearance: ='DatePickerCanvas.Appearance'.Outline
+                                    Format: ='DatePickerCanvas.Format'.Short
+                                    Height: =44
+                                    LayoutMinWidth: =0
+                                    SelectedDate: =varF_LogDate
+                        - nlThietBiNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =280
+                            Children:
+                              - nlThietBiLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Thiết bị *"
+                                    Wrap: =false
+                              - nlThietBi:
+                                  Control: ModernDropdown
+                                  Properties:
+                                    AccessibleLabel: ="Chọn thiết bị sản xuất"
+                                    Appearance: =Appearance.Outline
+                                    Default: =LookUp(colThietBiDD, Value = varF_ThietBi)
+                                    Height: =44
+                                    ItemDisplayText: =ThisItem.Value
+                                    Items: =colThietBiDD
+                                    LayoutMinWidth: =0
+                        - nlDanXuatNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =200
+                            Children:
+                              - nlDanXuatLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Dây chuyền / cấp điện áp (tự điền)"
+                              - nlDanXuat:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(29, 35, 42, 1)
+                                    Size: =15
+                                    Text: |-
+                                      =If(
+                                          IsBlank(nlThietBi.Selected.Value),
+                                          "— chưa chọn thiết bị —",
+                                          With(
+                                              {
+                                                  line: LookUp(tblThietBi, EquipmentName = nlThietBi.Selected.Value, LineCode),
+                                                  kv: LookUp(tblThietBi, EquipmentName = nlThietBi.Selected.Value, VoltageKV)
+                                              },
+                                              line & "  ·  " & kv & " kV"
+                                          )
+                                      )
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                  - nlHang2:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 800, 324, 72)
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =If(Parent.Width < 800, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                        LayoutGap: =12
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                      Children:
+                        - nlPlanNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =170
+                            Children:
+                              - nlPlanLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Sản lượng kế hoạch *"
+                              - nlPlanQty:
+                                  Control: TextInput
+                                  Properties:
+                                    AccessibleLabel: ="Nhập sản lượng kế hoạch"
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                                    Height: =44
+                                    Placeholder: ="0"
+                                    Value: =varF_PlanQty
+                        - nlActualNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =170
+                            Children:
+                              - nlActualLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Sản lượng thực hiện"
+                              - nlActualQty:
+                                  Control: TextInput
+                                  Properties:
+                                    AccessibleLabel: ="Nhập sản lượng thực hiện"
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                                    Height: =44
+                                    Placeholder: ="0"
+                                    Value: =varF_ActualQty
+                        - nlDefectNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =170
+                            Children:
+                              - nlDefectLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Số lượng lỗi"
+                              - nlDefectQty:
+                                  Control: TextInput
+                                  Properties:
+                                    AccessibleLabel: ="Nhập số lượng sản phẩm lỗi"
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                                    Height: =44
+                                    Placeholder: ="0"
+                                    Value: =varF_DefectQty
+                        - nlRunNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =170
+                            Children:
+                              - nlRunLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Giờ chạy máy"
+                              - nlRunHours:
+                                  Control: TextInput
+                                  Properties:
+                                    AccessibleLabel: ="Nhập số giờ chạy máy"
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                                    Height: =44
+                                    Placeholder: ="0"
+                                    Value: =varF_RunHours
+                  - nlHang3:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 800, 324, 72)
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =If(Parent.Width < 800, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                        LayoutGap: =12
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                      Children:
+                        - nlDownNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =170
+                            Children:
+                              - nlDownLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Giờ dừng máy"
+                              - nlDownHours:
+                                  Control: TextInput
+                                  Properties:
+                                    AccessibleLabel: ="Nhập số giờ dừng máy"
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                                    Height: =44
+                                    Placeholder: ="0"
+                                    Value: =varF_DownHours
+                        - nlLyDoNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =220
+                            Children:
+                              - nlLyDoLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Lý do dừng máy (bắt buộc khi giờ dừng lớn hơn 0)"
+                              - nlLyDo:
+                                  Control: ModernDropdown
+                                  Properties:
+                                    AccessibleLabel: ="Chọn lý do dừng máy"
+                                    Appearance: =Appearance.Outline
+                                    Default: =LookUp(colLyDoDD, Value = varF_LyDo)
+                                    Height: =44
+                                    ItemDisplayText: =ThisItem.Value
+                                    Items: =colLyDoDD
+                                    LayoutMinWidth: =0
+                        - nlEnergyNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =170
+                            Children:
+                              - nlEnergyLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Điện năng kWh"
+                              - nlEnergyKWh:
+                                  Control: TextInput
+                                  Properties:
+                                    AccessibleLabel: ="Nhập điện năng tiêu thụ kWh"
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                                    Height: =44
+                                    Placeholder: ="0"
+                                    Value: =varF_EnergyKWh
+                        - nlLaborNhom:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =72
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              Width: =170
+                            Children:
+                              - nlLaborLbl:
+                                  Control: Text
+                                  Properties:
+                                    AutoHeight: =true
+                                    FontColor: =RGBA(103, 114, 126, 1)
+                                    Size: =12
+                                    Text: ="Giờ công"
+                              - nlLaborHours:
+                                  Control: TextInput
+                                  Properties:
+                                    AccessibleLabel: ="Nhập số giờ công"
+                                    Appearance: ='TextInputCanvas.Appearance'.Outline
+                                    Height: =44
+                                    Placeholder: ="0"
+                                    Value: =varF_LaborHours
+            - nlPreviewCard:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(238, 243, 248, 1)
+                  FillPortions: =0
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =8
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =14
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =14
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - nlPreviewTitle:
+                      Control: Text
+                      Properties:
+                        AutoHeight: =true
+                        FontColor: =RGBA(29, 35, 42, 1)
+                        Text: ="Giá trị dẫn xuất sẽ được ghi cùng dòng nhật ký"
+                        Weight: ='TextCanvas.Weight'.Semibold
+                  - nlPreviewHang:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(238, 243, 248, 1)
+                        FillPortions: =0
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =10
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        LayoutWrap: =true
+                      Children:
+                        - nlPvGood:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(29, 35, 42, 1)
+                              LayoutMinWidth: =0
+                              Text: |-
+                                ="Hàng đạt: " & Text(SoAnToan(nlActualQty.Value) - SoAnToan(nlDefectQty.Value), "#,##0")
+                              Width: =190
+                              Wrap: =false
+                        - nlPvAchieve:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(29, 35, 42, 1)
+                              LayoutMinWidth: =0
+                              Text: |-
+                                ="Đạt kế hoạch: " &
+                                IfError(
+                                    Text(SoAnToan(nlActualQty.Value) / SoAnToan(nlPlanQty.Value) * 100, "0.0", "en-US") & "%",
+                                    "—"
+                                )
+                              Width: =190
+                              Wrap: =false
+                        - nlPvDefect:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(29, 35, 42, 1)
+                              LayoutMinWidth: =0
+                              Text: |-
+                                ="Tỷ lệ lỗi: " &
+                                IfError(
+                                    Text(SoAnToan(nlDefectQty.Value) / SoAnToan(nlActualQty.Value) * 100, "0.00", "en-US") & "%",
+                                    "—"
+                                )
+                              Width: =180
+                              Wrap: =false
+                        - nlPvProd:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(29, 35, 42, 1)
+                              LayoutMinWidth: =0
+                              Text: |-
+                                ="Năng suất/giờ: " &
+                                IfError(
+                                    Text(
+                                        (SoAnToan(nlActualQty.Value) - SoAnToan(nlDefectQty.Value)) / SoAnToan(nlRunHours.Value),
+                                        "#,##0.0",
+                                        "en-US"
+                                    ),
+                                    "—"
+                                )
+                              Width: =200
+                              Wrap: =false
+                        - nlPvStatus:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: |-
+                                =With(
+                                    {
+                                        a: SoAnToan(nlActualQty.Value),
+                                        p: SoAnToan(nlPlanQty.Value),
+                                        d: SoAnToan(nlDefectQty.Value)
+                                    },
+                                    If(
+                                        IfError(d / a, 0) > 0.03,
+                                        RGBA(196, 43, 28, 1),
+                                        If(IfError(a / p, 1) < 0.9, RGBA(184, 118, 0, 1), RGBA(16, 124, 16, 1))
+                                    )
+                                )
+                              LayoutMinWidth: =0
+                              Text: |-
+                                ="Trạng thái: " &
+                                With(
+                                    {
+                                        a: SoAnToan(nlActualQty.Value),
+                                        p: SoAnToan(nlPlanQty.Value),
+                                        d: SoAnToan(nlDefectQty.Value)
+                                    },
+                                    If(
+                                        IfError(d / a, 0) > 0.03,
+                                        "Cần kiểm tra",
+                                        If(IfError(a / p, 1) < 0.9, "Dưới kế hoạch", "Đạt")
+                                    )
+                                )
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Width: =200
+                              Wrap: =false
+            - nlLuu:
+                Control: Button
+                Properties:
+                  AccessibleLabel: =If(varLogIDDangSua = "", "Lưu dòng nhật ký mới", "Cập nhật dòng nhật ký đang sửa")
+                  Appearance: ='ButtonCanvas.Appearance'.Primary
+                  FontSize: =16
+                  Height: =52
+                  LayoutMinWidth: =0
+                  OnSelect: |-
+                    =If(
+                        IsBlank(nlThietBi.Selected.Value) ||
+                        IsBlank(nlNgay.SelectedDate) ||
+                        SoAnToan(nlPlanQty.Value) <= 0 ||
+                        (SoAnToan(nlDownHours.Value) > 0 && IsBlank(nlLyDo.Selected.Value)),
+                        Notify(
+                            "Cần chọn ngày, thiết bị, nhập sản lượng kế hoạch lớn hơn 0, và chọn lý do khi có giờ dừng máy.",
+                            NotificationType.Error
+                        ),
+                        With(
+                            {
+                                plan: SoAnToan(nlPlanQty.Value),
+                                actual: SoAnToan(nlActualQty.Value),
+                                defect: SoAnToan(nlDefectQty.Value),
+                                run: SoAnToan(nlRunHours.Value),
+                                down: SoAnToan(nlDownHours.Value),
+                                dien: SoAnToan(nlEnergyKWh.Value),
+                                cong: SoAnToan(nlLaborHours.Value),
+                                tbLine: LookUp(tblThietBi, EquipmentName = nlThietBi.Selected.Value, LineCode),
+                                tbKV: LookUp(tblThietBi, EquipmentName = nlThietBi.Selected.Value, VoltageKV)
+                            },
+                            With(
+                                {
+                                    good: actual - defect,
+                                    achieve: If(plan = 0, 0, actual / plan),
+                                    defectPct: If(actual = 0, 0, defect / actual),
+                                    nangsuat: If(run = 0, 0, (actual - defect) / run)
+                                },
+                                Patch(
+                                    ProductionLog,
+                                    If(
+                                        varLogIDDangSua = "",
+                                        Defaults(ProductionLog),
+                                        LookUp(ProductionLog, LogID = varLogIDDangSua)
+                                    ),
+                                    {
+                                        LogID: If(varLogIDDangSua = "", Text(GUID()), varLogIDDangSua),
+                                        LogDate: nlNgay.SelectedDate,
+                                        Equipment: nlThietBi.Selected.Value,
+                                        Line: tbLine,
+                                        VoltageKV: tbKV,
+                                        PlanQty: Text(plan, "0", "en-US"),
+                                        ActualQty: Text(actual, "0", "en-US"),
+                                        DefectQty: Text(defect, "0", "en-US"),
+                                        GoodQty: Text(good, "0", "en-US"),
+                                        RunHours: Text(run, "0.##", "en-US"),
+                                        DownHours: Text(down, "0.##", "en-US"),
+                                        DowntimeReason: nlLyDo.Selected.Value,
+                                        EnergyKWh: Text(dien, "0.##", "en-US"),
+                                        LaborHours: Text(cong, "0.##", "en-US"),
+                                        AchievePct: Text(achieve, "0.000000", "en-US"),
+                                        DefectPct: Text(defectPct, "0.000000", "en-US"),
+                                        ProductivityPerHour: Text(nangsuat, "0.0000", "en-US"),
+                                        Status: If(
+                                            defectPct > 0.03,
+                                            "Cần kiểm tra",
+                                            If(achieve < 0.9, "Dưới kế hoạch", "Đạt")
+                                        ),
+                                        CreatedBy: User().Email,
+                                        CreatedAt: Now()
+                                    }
+                                )
+                            )
+                        );
+                        If(
+                            IsEmpty(Errors(ProductionLog)),
+                            Notify(
+                                If(varLogIDDangSua = "", "Đã lưu dòng nhật ký mới.", "Đã cập nhật dòng nhật ký."),
+                                NotificationType.Success
+                            );
+                            Set(varLogIDDangSua, "");
+                            Set(varF_ThietBi, "");
+                            Set(varF_LyDo, "");
+                            Set(varF_PlanQty, "");
+                            Set(varF_ActualQty, "");
+                            Set(varF_DefectQty, "");
+                            Set(varF_RunHours, "");
+                            Set(varF_DownHours, "");
+                            Set(varF_EnergyKWh, "");
+                            Set(varF_LaborHours, "");
+                            Reset(nlThietBi);
+                            Reset(nlLyDo);
+                            Reset(nlPlanQty);
+                            Reset(nlActualQty);
+                            Reset(nlDefectQty);
+                            Reset(nlRunHours);
+                            Reset(nlDownHours);
+                            Reset(nlEnergyKWh);
+                            Reset(nlLaborHours),
+                            Notify(
+                                "Lưu thất bại: " & First(Errors(ProductionLog)).Message,
+                                NotificationType.Error
+                            )
+                        )
+                    )
+                  Text: =If(varLogIDDangSua = "", "Lưu dòng nhật ký", "Cập nhật dòng nhật ký")
+            - nlGhiChu:
+                Control: Text
+                Properties:
+                  AutoHeight: =true
+                  FontColor: =RGBA(103, 114, 126, 1)
+                  Size: =12
+                  Text: ="Dây chuyền và cấp điện áp lấy tự động từ bảng Equipments. Năm giá trị dẫn xuất do app tính rồi ghi thẳng vào Excel — file không chứa công thức."
+            - nlNav:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =68
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =8
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =10
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =10
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - nlNavDashboard:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Mở màn hình Tổng quan"
+                        Appearance: ='ButtonCanvas.Appearance'.Subtle
+                        FillPortions: =1
+                        Height: =48
+                        LayoutMinWidth: =0
+                        OnSelect: =Navigate(scrDashboard)
+                        Text: ="Tổng quan"
+                  - nlNavNhap:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Đang ở màn hình Nhập nhật ký"
+                        Appearance: ='ButtonCanvas.Appearance'.Primary
+                        FillPortions: =1
+                        Height: =48
+                        LayoutMinWidth: =0
+                        Text: ="Nhập nhật ký"
+                  - nlNavLichSu:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Mở màn hình Lịch sử nhật ký"
+                        Appearance: ='ButtonCanvas.Appearance'.Subtle
+                        FillPortions: =1
+                        Height: =48
+                        LayoutMinWidth: =0
+                        OnSelect: =Navigate(scrLichSu)
+                        Text: ="Lịch sử"

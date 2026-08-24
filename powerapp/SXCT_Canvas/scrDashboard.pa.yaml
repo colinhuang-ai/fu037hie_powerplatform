@@ -1,0 +1,609 @@
+Screens:
+  scrDashboard:
+    Properties:
+      Fill: |
+        =RGBA(244, 246, 249, 1)
+      LoadingSpinnerColor: =RGBA(11, 87, 148, 1)
+    Children:
+      - dbRoot:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(244, 246, 249, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =12
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - dbHeader:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(11, 87, 148, 1)
+                  FillPortions: =0
+                  Height: =74
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =12
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =12
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - dbTitle:
+                      Control: Text
+                      Properties:
+                        AutoHeight: =true
+                        FillPortions: =1
+                        FontColor: =RGBA(255, 255, 255, 1)
+                        LayoutMinWidth: =0
+                        Size: =20
+                        Text: ="Tổng quan sản xuất"
+                        VerticalAlign: =VerticalAlign.Middle
+                        Weight: ='TextCanvas.Weight'.Semibold
+                  - dbRefresh:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Tải lại số liệu tổng hợp từ Excel"
+                        Appearance: ='ButtonCanvas.Appearance'.Secondary
+                        Height: =44
+                        LayoutMinWidth: =0
+                        OnSelect: |-
+                          =Refresh(DailySummary);
+                          Refresh(MonthlySummary);
+                          ClearCollect(
+                              colNgay,
+                              ForAll(
+                                  DailySummary As d,
+                                  {
+                                      Ngay: d.SummaryDate,
+                                      PlanTotal: SoAnToan(d.PlanTotal),
+                                      ActualTotal: SoAnToan(d.ActualTotal),
+                                      DefectTotal: SoAnToan(d.DefectTotal),
+                                      GoodTotal: SoAnToan(d.GoodTotal),
+                                      RunHoursTotal: SoAnToan(d.RunHoursTotal),
+                                      DownHoursTotal: SoAnToan(d.DownHoursTotal),
+                                      EnergyTotal: SoAnToan(d.EnergyTotal)
+                                  }
+                              )
+                          );
+                          ClearCollect(
+                              colThang,
+                              ForAll(
+                                  MonthlySummary As m,
+                                  {
+                                      YearMonth: m.YearMonth,
+                                      Line: m.Line,
+                                      PlanTotal: SoAnToan(m.PlanTotal),
+                                      ActualTotal: SoAnToan(m.ActualTotal),
+                                      DefectTotal: SoAnToan(m.DefectTotal),
+                                      GoodTotal: SoAnToan(m.GoodTotal),
+                                      DownHoursTotal: SoAnToan(m.DownHoursTotal),
+                                      LogCount: SoAnToan(m.LogCount)
+                                  }
+                              )
+                          );
+                          Notify("Đã tải lại số liệu tổng hợp", NotificationType.Success)
+                        Text: ="Tải lại"
+                        Width: =110
+            - dbLocBar:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  LayoutWrap: =true
+                  PaddingBottom: =12
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =12
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - dbTuNgayNhom:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =70
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =4
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Width: =220
+                      Children:
+                        - dbTuNgayLbl:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(103, 114, 126, 1)
+                              Size: =12
+                              Text: ="Từ ngày"
+                              Wrap: =false
+                        - dbTuNgay:
+                            Control: DatePicker
+                            Properties:
+                              AccessibleLabel: ="Chọn ngày bắt đầu khoảng lọc tổng quan"
+                              Appearance: ='DatePickerCanvas.Appearance'.Outline
+                              Format: ='DatePickerCanvas.Format'.Short
+                              Height: =44
+                              LayoutMinWidth: =0
+                              OnChange: =Set(varTuNgay, dbTuNgay.SelectedDate)
+                              SelectedDate: =varTuNgay
+                  - dbDenNgayNhom:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =70
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =4
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Width: =220
+                      Children:
+                        - dbDenNgayLbl:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(103, 114, 126, 1)
+                              Size: =12
+                              Text: ="Đến ngày"
+                              Wrap: =false
+                        - dbDenNgay:
+                            Control: DatePicker
+                            Properties:
+                              AccessibleLabel: ="Chọn ngày kết thúc khoảng lọc tổng quan"
+                              Appearance: ='DatePickerCanvas.Appearance'.Outline
+                              Format: ='DatePickerCanvas.Format'.Short
+                              Height: =44
+                              LayoutMinWidth: =0
+                              OnChange: =Set(varDenNgay, dbDenNgay.SelectedDate)
+                              SelectedDate: =varDenNgay
+                  - dbPhamVi:
+                      Control: Text
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        AutoHeight: =true
+                        FillPortions: =1
+                        FontColor: =RGBA(103, 114, 126, 1)
+                        LayoutMinWidth: =160
+                        Size: =12
+                        Text: ="Đang tính trên " & CountRows(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay)) & " ngày (nguồn DailySummary)"
+            - dbKpiHang:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(244, 246, 249, 1)
+                  FillPortions: =0
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  LayoutWrap: =true
+                Children:
+                  - dbKpiPlan:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =92
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =4
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =12
+                        PaddingLeft: =14
+                        PaddingRight: =14
+                        PaddingTop: =12
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =190
+                      Children:
+                        - dbKpiPlanLbl:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(103, 114, 126, 1)
+                              Size: =12
+                              Text: ="Sản lượng kế hoạch"
+                        - dbKpiPlanVal:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(29, 35, 42, 1)
+                              Size: =24
+                              Text: =Text(Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), PlanTotal), "#,##0")
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Wrap: =false
+                  - dbKpiActual:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =92
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =4
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =12
+                        PaddingLeft: =14
+                        PaddingRight: =14
+                        PaddingTop: =12
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =190
+                      Children:
+                        - dbKpiActualLbl:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(103, 114, 126, 1)
+                              Size: =12
+                              Text: ="Sản lượng thực hiện"
+                        - dbKpiActualVal:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(11, 87, 148, 1)
+                              Size: =24
+                              Text: =Text(Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), ActualTotal), "#,##0")
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Wrap: =false
+                  - dbKpiAchieve:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =92
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =4
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =12
+                        PaddingLeft: =14
+                        PaddingRight: =14
+                        PaddingTop: =12
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =190
+                      Children:
+                        - dbKpiAchieveLbl:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(103, 114, 126, 1)
+                              Size: =12
+                              Text: ="Tỷ lệ đạt kế hoạch"
+                        - dbKpiAchieveVal:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: |-
+                                =With(
+                                    {
+                                        p: Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), PlanTotal),
+                                        a: Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), ActualTotal)
+                                    },
+                                    If(IfError(a / p, 1) < 0.9, RGBA(184, 118, 0, 1), RGBA(16, 124, 16, 1))
+                                )
+                              Size: =24
+                              Text: |-
+                                =With(
+                                    {
+                                        p: Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), PlanTotal),
+                                        a: Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), ActualTotal)
+                                    },
+                                    IfError(Text(a / p * 100, "0.0", "en-US") & "%", "—")
+                                )
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Wrap: =false
+                  - dbKpiDefect:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =92
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =4
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =12
+                        PaddingLeft: =14
+                        PaddingRight: =14
+                        PaddingTop: =12
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =190
+                      Children:
+                        - dbKpiDefectLbl:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(103, 114, 126, 1)
+                              Size: =12
+                              Text: ="Tỷ lệ lỗi"
+                        - dbKpiDefectVal:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: |-
+                                =With(
+                                    {
+                                        a: Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), ActualTotal),
+                                        d: Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), DefectTotal)
+                                    },
+                                    If(IfError(d / a, 0) > 0.03, RGBA(196, 43, 28, 1), RGBA(16, 124, 16, 1))
+                                )
+                              Size: =24
+                              Text: |-
+                                =With(
+                                    {
+                                        a: Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), ActualTotal),
+                                        d: Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), DefectTotal)
+                                    },
+                                    IfError(Text(d / a * 100, "0.00", "en-US") & "%", "—")
+                                )
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Wrap: =false
+                  - dbKpiDown:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =92
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =4
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =12
+                        PaddingLeft: =14
+                        PaddingRight: =14
+                        PaddingTop: =12
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =190
+                      Children:
+                        - dbKpiDownLbl:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(103, 114, 126, 1)
+                              Size: =12
+                              Text: ="Tổng giờ dừng máy"
+                        - dbKpiDownVal:
+                            Control: Text
+                            Properties:
+                              AutoHeight: =true
+                              FontColor: =RGBA(29, 35, 42, 1)
+                              Size: =24
+                              Text: =Text(Sum(Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay), DownHoursTotal), "#,##0.0") & " h"
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              Wrap: =false
+            - dbChartNgayNhom:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =340
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =8
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =12
+                  PaddingLeft: =14
+                  PaddingRight: =14
+                  PaddingTop: =12
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - dbChartNgayTitle:
+                      Control: Text
+                      Properties:
+                        AutoHeight: =true
+                        FontColor: =RGBA(29, 35, 42, 1)
+                        Size: =15
+                        Text: ="Xu hướng 30 ngày gần nhất trong khoảng đã chọn — kế hoạch so với thực hiện"
+                        Weight: ='TextCanvas.Weight'.Semibold
+                  - dbChartNgay:
+                      Control: LineChart
+                      Properties:
+                        FillPortions: =1
+                        GridStyle: =GridStyle.YOnly
+                        ItemColorSet: =[RGBA(148, 163, 178, 1), RGBA(11, 87, 148, 1)]
+                        Items: |-
+                          =ForAll(
+                              LastN(
+                                  SortByColumns(
+                                      Filter(colNgay, Ngay >= varTuNgay, Ngay <= varDenNgay),
+                                      "Ngay",
+                                      SortOrder.Ascending
+                                  ),
+                                  30
+                              ),
+                              {
+                                  NhanNgay: Text(Ngay, "dd/mm"),
+                                  KeHoach: PlanTotal,
+                                  ThucHien: ActualTotal
+                              }
+                          )
+                        Items.Labels: =NhanNgay
+                        Items.Series1: =KeHoach
+                        Items.Series2: =ThucHien
+                        Items.Series3: =ThucHien
+                        Items.Series4: =ThucHien
+                        Items.Series5: =ThucHien
+                        Items.Series6: =ThucHien
+                        Items.Series7: =ThucHien
+                        Items.Series8: =ThucHien
+                        Items.Series9: =ThucHien
+                        LayoutMinHeight: =0
+                        Markers: =false
+                        NumberOfSeries: =2
+                        XLabelAngle: =45
+            - dbChartLineNhom:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =340
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =8
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =12
+                  PaddingLeft: =14
+                  PaddingRight: =14
+                  PaddingTop: =12
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - dbChartLineTitle:
+                      Control: Text
+                      Properties:
+                        AutoHeight: =true
+                        FontColor: =RGBA(29, 35, 42, 1)
+                        Size: =15
+                        Text: ="So sánh dây chuyền — sản lượng thực hiện (toàn bộ MonthlySummary)"
+                        Weight: ='TextCanvas.Weight'.Semibold
+                  - dbChartLine:
+                      Control: BarChart
+                      Properties:
+                        AccessibleLabel: ="Biểu đồ cột so sánh sản lượng thực hiện giữa các dây chuyền"
+                        FillPortions: =1
+                        ItemColorSet: =[RGBA(0, 133, 139, 1)]
+                        Items: |-
+                          =ForAll(
+                              GroupBy(colThang, Line, ByLine) As g,
+                              {
+                                  DayChuyen: g.Line,
+                                  SanLuong: Sum(g.ByLine, ActualTotal)
+                              }
+                          )
+                        Items.Labels: =DayChuyen
+                        Items.Series1: =SanLuong
+                        Items.Series2: =SanLuong
+                        Items.Series3: =SanLuong
+                        Items.Series4: =SanLuong
+                        Items.Series5: =SanLuong
+                        Items.Series6: =SanLuong
+                        Items.Series7: =SanLuong
+                        Items.Series8: =SanLuong
+                        Items.Series9: =SanLuong
+                        LayoutMinHeight: =0
+                        XLabelAngle: =30
+            - dbNav:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =68
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =8
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =10
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =10
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                Children:
+                  - dbNavDashboard:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Đang ở màn hình Tổng quan"
+                        Appearance: ='ButtonCanvas.Appearance'.Primary
+                        FillPortions: =1
+                        Height: =48
+                        LayoutMinWidth: =0
+                        Text: ="Tổng quan"
+                  - dbNavNhap:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Mở màn hình Nhập nhật ký"
+                        Appearance: ='ButtonCanvas.Appearance'.Subtle
+                        FillPortions: =1
+                        Height: =48
+                        LayoutMinWidth: =0
+                        OnSelect: |-
+                          =Set(varLogIDDangSua, "");
+                          Set(varF_LogDate, Today());
+                          Set(varF_ThietBi, "");
+                          Set(varF_LyDo, "");
+                          Set(varF_PlanQty, "");
+                          Set(varF_ActualQty, "");
+                          Set(varF_DefectQty, "");
+                          Set(varF_RunHours, "");
+                          Set(varF_DownHours, "");
+                          Set(varF_EnergyKWh, "");
+                          Set(varF_LaborHours, "");
+                          Navigate(scrNhapLog)
+                        Text: ="Nhập nhật ký"
+                  - dbNavLichSu:
+                      Control: Button
+                      Properties:
+                        AccessibleLabel: ="Mở màn hình Lịch sử nhật ký"
+                        Appearance: ='ButtonCanvas.Appearance'.Subtle
+                        FillPortions: =1
+                        Height: =48
+                        LayoutMinWidth: =0
+                        OnSelect: =Navigate(scrLichSu)
+                        Text: ="Lịch sử"

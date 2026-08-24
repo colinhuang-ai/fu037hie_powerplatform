@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Đăng nhập hệ thống Quản lý Sản xuất Máy điện{% endblock %}
+
+{% block unauth_content %}
+<div class="login-page login-page-light">
+    <div class="login-box login-box-custom">
+        <!-- Logo Header -->
+        <div class="text-center mb-3">
+            <div class="login-logo-box mx-auto">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <h2 class="font-weight-bold text-dark mb-1" style="font-size: 1.75rem; letter-spacing: 0.5px;">EM-MES</h2>
+            <p class="text-muted small">Hệ thống Quản lý Sản xuất Máy điện Chuyên nghiệp</p>
+        </div>
+
+        <div class="card card-outline card-primary shadow">
+            <div class="card-body login-card-body p-4">
+                <p class="login-box-msg font-weight-bold text-dark pb-2">Đăng nhập để vào hệ thống</p>
+
+                <!-- Flash alerts in login -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'danger' else 'warning' }} alert-dismissible fade show text-sm py-2 px-3 mb-3" role="alert">
+                                <i class="fas fa-exclamation-triangle mr-1"></i> {{ message }}
+                                <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form action="{{ url_for('login', next=request.args.get('next')) }}" method="POST">
+                    <div class="input-group mb-3">
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Tên đăng nhập..." required autofocus>
+                        <div class="input-group-append">
+                            <div class="input-group-text bg-white text-muted">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-4">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu..." required>
+                        <div class="input-group-append">
+                            <div class="input-group-text bg-white text-muted">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block font-weight-bold py-2 shadow-sm">
+                                <i class="fa-solid fa-right-to-bracket mr-2"></i> Đăng nhập hệ thống
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Demo Accounts Table Box -->
+                <div class="mt-4 pt-3 border-top">
+                    <div class="small font-weight-bold text-dark mb-2 d-flex align-items-center">
+                        <i class="fa-solid fa-key text-warning mr-2"></i> Tài khoản dùng thử mẫu:
+                    </div>
+                    <table class="table table-sm table-bordered text-xs mb-0 bg-light">
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-bold text-danger">Admin:</td>
+                                <td><code>admin</code></td>
+                                <td class="text-muted">MK: <code>admin123</code></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold text-primary">Quản lý:</td>
+                                <td><code>quanly</code></td>
+                                <td class="text-muted">MK: <code>quanly123</code></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold text-success">Công nhân:</td>
+                                <td><code>congnhan</code></td>
+                                <td class="text-muted">MK: <code>congnhan123</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+</div>
+{% endblock %}

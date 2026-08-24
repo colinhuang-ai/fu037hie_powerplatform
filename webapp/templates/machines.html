@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}Quản Lý Thiết Bị & Dây Chuyền Sản Xuất Máy Điện{% endblock %}
+{% block page_title %}Danh Mục Máy Móc & Thiết Bị Chế Tạo{% endblock %}
+{% block page_subtitle %}Theo dõi tình trạng vận hành thiết bị, công suất định mức và tỷ lệ hư hỏng qua từng máy{% endblock %}
+
+{% block topbar_actions %}
+{% if current_user.role in ['admin', 'manager'] %}
+<button type="button" class="btn btn-primary btn-sm font-weight-bold" onclick="openModal('addMachineModal')">
+    <i class="fa-solid fa-plus mr-1"></i> Thêm Thiết Bị Mới
+</button>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary card-outline shadow-sm">
+    <div class="card-header bg-white">
+        <h3 class="card-title text-dark font-weight-bold">
+            <i class="fa-solid fa-gears mr-2 text-primary"></i>
+            Danh Sách Máy Chế Tạo & Lắp Ráp Máy Điện ({{ machines|length }} thiết bị)
+        </h3>
+    </div>
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-bordered table-striped table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Mã máy</th>
+                    <th>Tên máy / Thiết bị</th>
+                    <th>Công đoạn chế tạo</th>
+                    <th>Công suất</th>
+                    <th>Vị trí xưởng</th>
+                    <th class="text-right">Ca vận hành</th>
+                    <th class="text-right">Sản lượng</th>
+                    <th class="text-right">Tỷ lệ lỗi</th>
+                    <th>Trạng thái</th>
+                    {% if current_user.role in ['admin', 'manager'] %}
+                    <th class="text-center">Thao tác</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in machines %}
+                <tr>
+                    <td><span class="font-weight-bold text-primary">{{ m.machine_code }}</span></td>
+                    <td class="font-weight-bold text-dark">{{ m.name }}</td>
+                    <td><span class="badge badge-info">{{ m.machine_type }}</span></td>
+                    <td>{{ m.capacity if m.capacity else '—' }}</td>
+                    <td><i class="fa-solid fa-location-dot text-danger mr-1 small"></i> {{ m.location if m.location else 'Xưởng chính' }}</td>
+                    <td class="text-right font-weight-bold">{{ m.total_runs }} ca</td>
+                    <td class="text-right text-success font-weight-bold">{{ "{:,}".format(m.total_output) }} máy</td>
+                    <td class="text-right">
+                        {% if m.defect_rate is not none %}
+                            <span class="rate-badge {% if m.defect_rate <= 3.0 %}rate-good{% elif m.defect_rate <= 5.0 %}rate-warning{% else %}rate-danger{% endif %}">
+                                {{ m.defect_rate }}%
+                            </span>
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if m.status == 'running' %}
+                            <span class="badge badge-success"><i class="fas fa-check-circle mr-1"></i> Đang chạy</span>
+                        {% elif m.status == 'maintenance' %}
+                            <span class="badge badge-warning"><i class="fas fa-tools mr-1"></i> Bảo trì</span>
+                        {% elif m.status == 'error' %}
+                            <span class="badge badge-danger"><i class="fas fa-exclamation-triangle mr-1"></i> Sự cố</span>
+                        {% else %}
+                            <span class="badge badge-secondary"><i class="fas fa-pause-circle mr-1"></i> Tạm dừng</span>
+                        {% endif %}
+                    </td>
+                    {% if current_user.role in ['admin', 'manager'] %}
+                    <td class="text-center text-nowrap">
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-default text-primary" title="Chỉnh sửa"
+                                onclick='editMachine({{ dict(m)|tojson|safe }})'>
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            {% if current_user.role == 'admin' %}
+                            <form action="{{ url_for('machine_delete', machine_id=m.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa máy này?');">
+                                <button type="submit" class="btn btn-default text-danger" title="Xóa">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL THÊM MÁY MỚI -->
+<div class="modal fade" id="addMachineModal" tabindex="-1" role="dialog" aria-labelledby="addMachineModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title font-weight-bold" id="addMachineModalLabel">
+                    <i class="fa-solid fa-circle-plus mr-2"></i> Thêm Máy Móc / Dây Chuyền Mới
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ url_for('machine_add') }}" method="POST">
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="machine_code" class="font-weight-bold">Mã máy *</label>
+                            <input type="text" id="machine_code" name="machine_code" class="form-control" placeholder="VD: M-QD03" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="name" class="font-weight-bold">Tên thiết bị *</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="VD: Máy quấn dây Stator tự động" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="machine_type" class="font-weight-bold">Công đoạn chế tạo *</label>
+                            <input type="text" id="machine_type" name="machine_type" class="form-control" placeholder="VD: Quấn dây Stator, Ép rotor, Đúc vỏ..." required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="capacity" class="font-weight-bold">Công suất thiết kế</label>
+                            <input type="text" id="capacity" name="capacity" class="form-control" placeholder="VD: 100 cái/giờ">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="location" class="font-weight-bold">Vị trí trong nhà xưởng</label>
+                            <input type="text" id="location" name="location" class="form-control" placeholder="VD: Xưởng A - Chuyền 2">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="status" class="font-weight-bold">Trạng thái vận hành</label>
+                            <select id="status" name="status" class="form-control">
+                                <option value="running">Đang hoạt động (Running)</option>
+                                <option value="maintenance">Đang bảo trì định kỳ (Maintenance)</option>
+                                <option value="idle">Nghỉ / Sẵn sàng (Idle)</option>
+                                <option value="error">Gặp sự cố kỹ thuật (Error)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold"><i class="fa-solid fa-save mr-1"></i> Lưu máy mới</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SỬA MÁY -->
+<div class="modal fade" id="editMachineModal" tabindex="-1" role="dialog" aria-labelledby="editMachineModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title font-weight-bold" id="editMachineModalLabel">
+                    <i class="fa-solid fa-pen-to-square mr-2"></i> Chỉnh Sửa Thông Tin Máy Móc
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editMachineForm" method="POST">
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="edit_machine_code" class="font-weight-bold">Mã máy *</label>
+                            <input type="text" id="edit_machine_code" name="machine_code" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="edit_name" class="font-weight-bold">Tên thiết bị *</label>
+                            <input type="text" id="edit_name" name="name" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="edit_machine_type" class="font-weight-bold">Công đoạn chế tạo *</label>
+                            <input type="text" id="edit_machine_type" name="machine_type" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="edit_capacity" class="font-weight-bold">Công suất thiết kế</label>
+                            <input type="text" id="edit_capacity" name="capacity" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="edit_location" class="font-weight-bold">Vị trí lắp đặt</label>
+                            <input type="text" id="edit_location" name="location" class="form-control">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="edit_status" class="font-weight-bold">Trạng thái vận hành</label>
+                            <select id="edit_status" name="status" class="form-control">
+                                <option value="running">Đang hoạt động (Running)</option>
+                                <option value="maintenance">Đang bảo trì định kỳ (Maintenance)</option>
+                                <option value="idle">Nghỉ / Sẵn sàng (Idle)</option>
+                                <option value="error">Gặp sự cố kỹ thuật (Error)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-warning font-weight-bold"><i class="fa-solid fa-save mr-1"></i> Cập nhật thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

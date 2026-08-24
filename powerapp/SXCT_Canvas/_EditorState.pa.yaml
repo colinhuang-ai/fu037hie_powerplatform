@@ -1,0 +1,5 @@
+EditorState:
+  ScreensOrder:
+    - scrDashboard
+    - scrNhapLog
+    - scrLichSu

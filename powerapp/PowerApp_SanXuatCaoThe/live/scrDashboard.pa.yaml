@@ -1,0 +1,1485 @@
+Screens:
+  scrDashboard:
+    Properties:
+      Fill: =RGBA(242, 245, 249, 1)
+      LoadingSpinner: =LoadingSpinner.None
+      OnVisible: |
+        =ClearCollect(
+            colLoc,
+            Filter(
+                colSanXuat,
+                (varThang = "Tất cả" || Text(Month('Ngày sản xuất')) = varThang) && (varThietBi = "Tất cả" || 'Thiết bị' = varThietBi)
+            )
+        );
+        ClearCollect(
+            colTB,
+            Sort(
+                AddColumns(
+                    GroupBy(
+                        AddColumns(colLoc, TenTB, 'Thiết bị', SoLuong, 'SL thực tế', SoLoiTB, 'SP lỗi'),
+                        TenTB,
+                        grp
+                    ),
+                    SanLuong, Sum(grp, SoLuong),
+                    SoLoi, Sum(grp, SoLoiTB)
+                ),
+                SanLuong,
+                SortOrder.Descending
+            )
+        );
+        ClearCollect(
+            colThang,
+            Sort(
+                AddColumns(
+                    GroupBy(
+                        AddColumns(colLoc, ThangSo, Month('Ngày sản xuất'), SoLuong, 'SL thực tế'),
+                        ThangSo,
+                        grp
+                    ),
+                    SanLuong, Sum(grp, SoLuong)
+                ),
+                ThangSo,
+                SortOrder.Ascending
+            )
+        )
+    Children:
+      - dbHeaderBar:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(11, 60, 109, 1)
+            Height: =64
+            Width: =1366
+            X: =0
+            Y: =0
+      - dbTitle:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(255, 255, 255, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =26
+            Size: =17
+            Text: ="DASHBOARD SẢN XUẤT THIẾT BỊ ĐIỆN CAO THẾ"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =760
+            Wrap: =false
+            X: =24
+            Y: =10
+      - dbSubTitle:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(178, 205, 228, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =20
+            Size: =11
+            Text: ="KPI sản lượng - giờ công - chất lượng  |  Cơ sở dữ liệu Dataverse"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =760
+            Wrap: =false
+            X: =24
+            Y: =34
+      - dbBtnNhap:
+          Control: Classic/Button
+          Properties:
+            BorderThickness: =0
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(0, 158, 204, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =32
+            HoverColor: =Self.Color
+            HoverFill: =ColorFade(Self.Fill, -15%)
+            OnSelect: =Navigate(scrNhapLieu, ScreenTransition.Fade)
+            PressedColor: =Self.Color
+            PressedFill: =ColorFade(Self.Fill, -25%)
+            RadiusBottomLeft: =4
+            RadiusBottomRight: =4
+            RadiusTopLeft: =4
+            RadiusTopRight: =4
+            Size: =13
+            Text: ="Nhập số liệu sản xuất"
+            Width: =226
+            X: =1116
+            Y: =16
+      - dbFilterCard:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =56
+            Width: =1318
+            X: =24
+            Y: =80
+      - dbLblThang:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="THÁNG"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =150
+            Wrap: =false
+            X: =40
+            Y: =90
+      - ddThang:
+          Control: Classic/DropDown
+          Properties:
+            Color: =RGBA(28, 37, 48, 1)
+            Default: =varThang
+            Font: =Font.'Open Sans'
+            Height: =26
+            Items: =["Tất cả","1","2","3","4","5","6","7","8","9","10","11","12"]
+            OnChange: |
+              =Set(varThang, ddThang.Selected.Value);
+              ClearCollect(
+                  colLoc,
+                  Filter(
+                      colSanXuat,
+                      (varThang = "Tất cả" || Text(Month('Ngày sản xuất')) = varThang) && (varThietBi = "Tất cả" || 'Thiết bị' = varThietBi)
+                  )
+              );
+              ClearCollect(
+                  colTB,
+                  Sort(
+                      AddColumns(
+                          GroupBy(
+                              AddColumns(colLoc, TenTB, 'Thiết bị', SoLuong, 'SL thực tế', SoLoiTB, 'SP lỗi'),
+                              TenTB,
+                              grp
+                          ),
+                          SanLuong, Sum(grp, SoLuong),
+                          SoLoi, Sum(grp, SoLoiTB)
+                      ),
+                      SanLuong,
+                      SortOrder.Descending
+                  )
+              );
+              ClearCollect(
+                  colThang,
+                  Sort(
+                      AddColumns(
+                          GroupBy(
+                              AddColumns(colLoc, ThangSo, Month('Ngày sản xuất'), SoLuong, 'SL thực tế'),
+                              ThangSo,
+                              grp
+                          ),
+                          SanLuong, Sum(grp, SoLuong)
+                      ),
+                      ThangSo,
+                      SortOrder.Ascending
+                  )
+              )
+            Size: =12
+            Width: =150
+            X: =40
+            Y: =105
+      - dbLblTB:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="LOẠI THIẾT BỊ"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =260
+            Wrap: =false
+            X: =210
+            Y: =90
+      - ddThietBi:
+          Control: Classic/DropDown
+          Properties:
+            Color: =RGBA(28, 37, 48, 1)
+            Default: =varThietBi
+            Font: =Font.'Open Sans'
+            Height: =26
+            Items: =["Tất cả","Máy biến áp lực","Máy cắt cao áp","Dao cách ly","Chống sét van","Biến dòng điện","Biến điện áp"]
+            OnChange: |
+              =Set(varThietBi, ddThietBi.Selected.Value);
+              ClearCollect(
+                  colLoc,
+                  Filter(
+                      colSanXuat,
+                      (varThang = "Tất cả" || Text(Month('Ngày sản xuất')) = varThang) && (varThietBi = "Tất cả" || 'Thiết bị' = varThietBi)
+                  )
+              );
+              ClearCollect(
+                  colTB,
+                  Sort(
+                      AddColumns(
+                          GroupBy(
+                              AddColumns(colLoc, TenTB, 'Thiết bị', SoLuong, 'SL thực tế', SoLoiTB, 'SP lỗi'),
+                              TenTB,
+                              grp
+                          ),
+                          SanLuong, Sum(grp, SoLuong),
+                          SoLoi, Sum(grp, SoLoiTB)
+                      ),
+                      SanLuong,
+                      SortOrder.Descending
+                  )
+              );
+              ClearCollect(
+                  colThang,
+                  Sort(
+                      AddColumns(
+                          GroupBy(
+                              AddColumns(colLoc, ThangSo, Month('Ngày sản xuất'), SoLuong, 'SL thực tế'),
+                              ThangSo,
+                              grp
+                          ),
+                          SanLuong, Sum(grp, SoLuong)
+                      ),
+                      ThangSo,
+                      SortOrder.Ascending
+                  )
+              )
+            Size: =12
+            Width: =260
+            X: =210
+            Y: =105
+      - dbLblCount:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =20
+            Size: =12
+            Text: |
+              ="Đang hiển thị " & Text(CountRows(colLoc), "#,##0") & " / " & Text(CountRows(colSanXuat), "#,##0") & " bản ghi"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =380
+            Wrap: =false
+            X: =495
+            Y: =98
+      - dbBtnRefresh:
+          Control: Classic/Button
+          Properties:
+            BorderThickness: =0
+            Color: =RGBA(11, 60, 109, 1)
+            Fill: =RGBA(238, 242, 247, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =26
+            HoverColor: =Self.Color
+            HoverFill: =ColorFade(Self.Fill, -15%)
+            OnSelect: |
+              =ClearCollect(colSanXuat, 'Sản xuất cao thế');
+              ClearCollect(
+                  colLoc,
+                  Filter(
+                      colSanXuat,
+                      (varThang = "Tất cả" || Text(Month('Ngày sản xuất')) = varThang) && (varThietBi = "Tất cả" || 'Thiết bị' = varThietBi)
+                  )
+              );
+              ClearCollect(
+                  colTB,
+                  Sort(
+                      AddColumns(
+                          GroupBy(
+                              AddColumns(colLoc, TenTB, 'Thiết bị', SoLuong, 'SL thực tế', SoLoiTB, 'SP lỗi'),
+                              TenTB,
+                              grp
+                          ),
+                          SanLuong, Sum(grp, SoLuong),
+                          SoLoi, Sum(grp, SoLoiTB)
+                      ),
+                      SanLuong,
+                      SortOrder.Descending
+                  )
+              );
+              ClearCollect(
+                  colThang,
+                  Sort(
+                      AddColumns(
+                          GroupBy(
+                              AddColumns(colLoc, ThangSo, Month('Ngày sản xuất'), SoLuong, 'SL thực tế'),
+                              ThangSo,
+                              grp
+                          ),
+                          SanLuong, Sum(grp, SoLuong)
+                      ),
+                      ThangSo,
+                      SortOrder.Ascending
+                  )
+              )
+            PressedColor: =Self.Color
+            PressedFill: =ColorFade(Self.Fill, -25%)
+            RadiusBottomLeft: =4
+            RadiusBottomRight: =4
+            RadiusTopLeft: =4
+            RadiusTopRight: =4
+            Size: =11
+            Text: ="Tải lại"
+            Width: =90
+            X: =1236
+            Y: =96
+      - kpiCard0:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =88
+            Width: =316
+            X: =24
+            Y: =150
+      - kpiBar0:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(11, 60, 109, 1)
+            Height: =88
+            Width: =4
+            X: =24
+            Y: =150
+      - kpiT0:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="SẢN LƯỢNG THỰC TẾ"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =42
+            Y: =162
+      - kpiV0:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(11, 60, 109, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =36
+            Size: =25
+            Text: |
+              =Text(Sum(colLoc, 'SL thực tế'), "#,##0")
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =42
+            Y: =178
+      - kpiU0:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =14
+            Size: =10
+            Text: ="chiếc"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =42
+            Y: =214
+      - kpiCard1:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =88
+            Width: =316
+            X: =358
+            Y: =150
+      - kpiBar1:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(11, 60, 109, 1)
+            Height: =88
+            Width: =4
+            X: =358
+            Y: =150
+      - kpiT1:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="SẢN LƯỢNG KẾ HOẠCH"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =376
+            Y: =162
+      - kpiV1:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(11, 60, 109, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =36
+            Size: =25
+            Text: |
+              =Text(Sum(colLoc, 'SL kế hoạch'), "#,##0")
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =376
+            Y: =178
+      - kpiU1:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =14
+            Size: =10
+            Text: ="chiếc"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =376
+            Y: =214
+      - kpiCard2:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =88
+            Width: =316
+            X: =692
+            Y: =150
+      - kpiBar2:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(22, 148, 84, 1)
+            Height: =88
+            Width: =4
+            X: =692
+            Y: =150
+      - kpiT2:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="HOÀN THÀNH KẾ HOẠCH"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =710
+            Y: =162
+      - kpiV2:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(22, 148, 84, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =36
+            Size: =25
+            Text: =IfError(Text(Sum(colLoc, 'SL thực tế') / Sum(colLoc, 'SL kế hoạch'), "0.0%"), "-")
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =710
+            Y: =178
+      - kpiU2:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =14
+            Size: =10
+            Text: ="so với kế hoạch"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =710
+            Y: =214
+      - kpiCard3:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =88
+            Width: =316
+            X: =1026
+            Y: =150
+      - kpiBar3:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(203, 44, 49, 1)
+            Height: =88
+            Width: =4
+            X: =1026
+            Y: =150
+      - kpiT3:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="TỶ LỆ LỖI"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =1044
+            Y: =162
+      - kpiV3:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(203, 44, 49, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =36
+            Size: =25
+            Text: =IfError(Text(Sum(colLoc, 'SP lỗi') / Sum(colLoc, 'SL thực tế'), "0.00%"), "-")
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =1044
+            Y: =178
+      - kpiU3:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =14
+            Size: =10
+            Text: ="trên sản lượng thực tế"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =1044
+            Y: =214
+      - kpiCard4:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =88
+            Width: =316
+            X: =24
+            Y: =250
+      - kpiBar4:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(11, 60, 109, 1)
+            Height: =88
+            Width: =4
+            X: =24
+            Y: =250
+      - kpiT4:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="GIỜ CÔNG"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =42
+            Y: =262
+      - kpiV4:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(11, 60, 109, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =36
+            Size: =25
+            Text: |
+              =Text(Sum(colLoc, 'Giờ công'), "#,##0.0")
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =42
+            Y: =278
+      - kpiU4:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =14
+            Size: =10
+            Text: ="giờ"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =42
+            Y: =314
+      - kpiCard5:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =88
+            Width: =316
+            X: =358
+            Y: =250
+      - kpiBar5:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(214, 138, 12, 1)
+            Height: =88
+            Width: =4
+            X: =358
+            Y: =250
+      - kpiT5:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="GIỜ DỪNG MÁY"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =376
+            Y: =262
+      - kpiV5:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(214, 138, 12, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =36
+            Size: =25
+            Text: |
+              =Text(Sum(colLoc, 'Giờ dừng máy'), "#,##0.0")
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =376
+            Y: =278
+      - kpiU5:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =14
+            Size: =10
+            Text: ="giờ"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =376
+            Y: =314
+      - kpiCard6:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =88
+            Width: =316
+            X: =692
+            Y: =250
+      - kpiBar6:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(0, 158, 204, 1)
+            Height: =88
+            Width: =4
+            X: =692
+            Y: =250
+      - kpiT6:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="ĐIỆN NĂNG TIÊU THỤ"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =710
+            Y: =262
+      - kpiV6:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(0, 158, 204, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =36
+            Size: =25
+            Text: |
+              =Text(Sum(colLoc, 'Điện năng'), "#,##0")
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =710
+            Y: =278
+      - kpiU6:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =14
+            Size: =10
+            Text: ="kWh"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =710
+            Y: =314
+      - kpiCard7:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =88
+            Width: =316
+            X: =1026
+            Y: =250
+      - kpiBar7:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(203, 44, 49, 1)
+            Height: =88
+            Width: =4
+            X: =1026
+            Y: =250
+      - kpiT7:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =14
+            Size: =9
+            Text: ="SẢN PHẨM LỖI"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =1044
+            Y: =262
+      - kpiV7:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(203, 44, 49, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =36
+            Size: =25
+            Text: |
+              =Text(Sum(colLoc, 'SP lỗi'), "#,##0")
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =1044
+            Y: =278
+      - kpiU7:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =14
+            Size: =10
+            Text: ="chiếc"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =284
+            Wrap: =false
+            X: =1044
+            Y: =314
+      - chart1Card:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =170
+            Width: =660
+            X: =24
+            Y: =356
+      - chart1Title:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(28, 37, 48, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =18
+            Size: =12
+            Text: ="SẢN LƯỢNG THEO LOẠI THIẾT BỊ"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =628
+            Wrap: =false
+            X: =40
+            Y: =366
+      - galThietBi:
+          Control: Gallery
+          Variant: Vertical
+          Properties:
+            Height: =122
+            Items: =colTB
+            Selectable: =false
+            ShowNavigation: =false
+            ShowScrollbar: =false
+            TemplatePadding: =0
+            TemplateSize: =20
+            Width: =628
+            X: =40
+            Y: =392
+          Children:
+            - g1Name:
+                Control: Label
+                Properties:
+                  Align: =Align.Left
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =20
+                  Size: =11
+                  Text: =ThisItem.TenTB
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =150
+                  Wrap: =false
+                  X: =0
+                  Y: =0
+            - g1Track:
+                Control: Rectangle
+                Properties:
+                  Fill: =RGBA(236, 240, 245, 1)
+                  Height: =10
+                  Width: =330
+                  X: =156
+                  Y: =5
+            - g1Bar:
+                Control: Rectangle
+                Properties:
+                  Fill: =RGBA(0, 158, 204, 1)
+                  Height: =10
+                  Width: =IfError(330 * ThisItem.SanLuong / Max(colTB, SanLuong), 0)
+                  X: =156
+                  Y: =5
+            - g1Val:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =20
+                  Size: =11
+                  Text: |
+                    =Text(ThisItem.SanLuong, "#,##0")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =70
+                  Wrap: =false
+                  X: =494
+                  Y: =0
+            - g1Loi:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(203, 44, 49, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =20
+                  Size: =10
+                  Text: |
+                    =Text(ThisItem.SoLoi, "#,##0") & " lỗi"
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =60
+                  Wrap: =false
+                  X: =566
+                  Y: =0
+      - chart2Card:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =170
+            Width: =640
+            X: =702
+            Y: =356
+      - chart2Title:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(28, 37, 48, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =18
+            Size: =12
+            Text: ="SẢN LƯỢNG THEO THÁNG"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =608
+            Wrap: =false
+            X: =718
+            Y: =366
+      - galThang:
+          Control: Gallery
+          Variant: Vertical
+          Properties:
+            Height: =122
+            Items: =colThang
+            Selectable: =false
+            ShowNavigation: =false
+            ShowScrollbar: =false
+            TemplatePadding: =0
+            TemplateSize: =17
+            Width: =608
+            X: =718
+            Y: =392
+          Children:
+            - g2Name:
+                Control: Label
+                Properties:
+                  Align: =Align.Left
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =17
+                  Size: =11
+                  Text: ="Tháng " & Text(ThisItem.ThangSo)
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =70
+                  Wrap: =false
+                  X: =0
+                  Y: =0
+            - g2Track:
+                Control: Rectangle
+                Properties:
+                  Fill: =RGBA(236, 240, 245, 1)
+                  Height: =9
+                  Width: =330
+                  X: =76
+                  Y: =4
+            - g2Bar:
+                Control: Rectangle
+                Properties:
+                  Fill: =RGBA(11, 60, 109, 1)
+                  Height: =9
+                  Width: =IfError(330 * ThisItem.SanLuong / Max(colThang, SanLuong), 0)
+                  X: =76
+                  Y: =4
+            - g2Val:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =17
+                  Size: =11
+                  Text: |
+                    =Text(ThisItem.SanLuong, "#,##0")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =80
+                  Wrap: =false
+                  X: =414
+                  Y: =0
+      - tblCard:
+          Control: Rectangle
+          Properties:
+            BorderColor: =RGBA(224, 230, 237, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =208
+            Width: =1318
+            X: =24
+            Y: =540
+      - tblTitle:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(28, 37, 48, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =18
+            Size: =12
+            Text: ="CHI TIẾT SẢN XUẤT THEO NGÀY"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =400
+            Wrap: =false
+            X: =40
+            Y: =550
+      - tblHint:
+          Control: Label
+          Properties:
+            Align: =Align.Right
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Normal
+            Height: =18
+            Size: =10
+            Text: ="Bấm vào một dòng để mở bản ghi ở màn hình nhập liệu"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =420
+            Wrap: =false
+            X: =906
+            Y: =550
+      - tblHeadBg:
+          Control: Rectangle
+          Properties:
+            Fill: =RGBA(246, 248, 251, 1)
+            Height: =24
+            Width: =1286
+            X: =40
+            Y: =574
+      - th0:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Ngày"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =90
+            Wrap: =false
+            X: =46
+            Y: =574
+      - th1:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Thiết bị"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =170
+            Wrap: =false
+            X: =138
+            Y: =574
+      - th2:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Dây chuyền"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =110
+            Wrap: =false
+            X: =310
+            Y: =574
+      - th3:
+          Control: Label
+          Properties:
+            Align: =Align.Right
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="kV"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =50
+            Wrap: =false
+            X: =422
+            Y: =574
+      - th4:
+          Control: Label
+          Properties:
+            Align: =Align.Right
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Kế hoạch"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =70
+            Wrap: =false
+            X: =474
+            Y: =574
+      - th5:
+          Control: Label
+          Properties:
+            Align: =Align.Right
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Thực tế"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =70
+            Wrap: =false
+            X: =546
+            Y: =574
+      - th6:
+          Control: Label
+          Properties:
+            Align: =Align.Right
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Lỗi"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =50
+            Wrap: =false
+            X: =618
+            Y: =574
+      - th7:
+          Control: Label
+          Properties:
+            Align: =Align.Right
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Đạt"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =60
+            Wrap: =false
+            X: =670
+            Y: =574
+      - th8:
+          Control: Label
+          Properties:
+            Align: =Align.Right
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Giờ công"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =80
+            Wrap: =false
+            X: =732
+            Y: =574
+      - th9:
+          Control: Label
+          Properties:
+            Align: =Align.Right
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Hoàn thành"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =90
+            Wrap: =false
+            X: =814
+            Y: =574
+      - th10:
+          Control: Label
+          Properties:
+            Align: =Align.Right
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Tỷ lệ lỗi"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =80
+            Wrap: =false
+            X: =906
+            Y: =574
+      - th11:
+          Control: Label
+          Properties:
+            Align: =Align.Left
+            Color: =RGBA(110, 122, 138, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =24
+            Size: =10
+            Text: ="Trạng thái"
+            VerticalAlign: =VerticalAlign.Middle
+            Width: =140
+            Wrap: =false
+            X: =990
+            Y: =574
+      - galChiTiet:
+          Control: Gallery
+          Variant: Vertical
+          Properties:
+            Height: =138
+            Items: =Sort(colLoc, 'Ngày sản xuất', SortOrder.Descending)
+            Selectable: =true
+            ShowNavigation: =false
+            ShowScrollbar: =true
+            TemplatePadding: =0
+            TemplateSize: =26
+            Width: =1286
+            X: =40
+            Y: =600
+          Children:
+            - tdLine:
+                Control: Rectangle
+                Properties:
+                  Fill: =RGBA(238, 241, 245, 1)
+                  Height: =1
+                  Width: =1282
+                  X: =0
+                  Y: =25
+            - td0:
+                Control: Label
+                Properties:
+                  Align: =Align.Left
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: =Text(ThisItem.'Ngày sản xuất', "dd/mm/yyyy")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =90
+                  Wrap: =false
+                  X: =6
+                  Y: =0
+            - td1:
+                Control: Label
+                Properties:
+                  Align: =Align.Left
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: =ThisItem.'Thiết bị'
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =170
+                  Wrap: =false
+                  X: =98
+                  Y: =0
+            - td2:
+                Control: Label
+                Properties:
+                  Align: =Align.Left
+                  Color: =RGBA(110, 122, 138, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: =ThisItem.'Dây chuyền'
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =110
+                  Wrap: =false
+                  X: =270
+                  Y: =0
+            - td3:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(110, 122, 138, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: =Text(ThisItem.'Cấp điện áp')
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =50
+                  Wrap: =false
+                  X: =382
+                  Y: =0
+            - td4:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: |
+                    =Text(ThisItem.'SL kế hoạch', "#,##0")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =70
+                  Wrap: =false
+                  X: =434
+                  Y: =0
+            - td5:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: |
+                    =Text(ThisItem.'SL thực tế', "#,##0")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =70
+                  Wrap: =false
+                  X: =506
+                  Y: =0
+            - td6:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(203, 44, 49, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: |
+                    =Text(ThisItem.'SP lỗi', "#,##0")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =50
+                  Wrap: =false
+                  X: =578
+                  Y: =0
+            - td7:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(22, 148, 84, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: |
+                    =Text(ThisItem.'SP đạt', "#,##0")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =60
+                  Wrap: =false
+                  X: =630
+                  Y: =0
+            - td8:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: |
+                    =Text(ThisItem.'Giờ công', "#,##0.0")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =80
+                  Wrap: =false
+                  X: =692
+                  Y: =0
+            - td9:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: =Text(ThisItem.'Hoàn thành KH', "0.0%")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =90
+                  Wrap: =false
+                  X: =774
+                  Y: =0
+            - td10:
+                Control: Label
+                Properties:
+                  Align: =Align.Right
+                  Color: =RGBA(28, 37, 48, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Normal
+                  Height: =25
+                  Size: =11
+                  Text: =Text(ThisItem.'Tỷ lệ lỗi', "0.00%")
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =80
+                  Wrap: =false
+                  X: =866
+                  Y: =0
+            - tdStatusBg:
+                Control: Rectangle
+                Properties:
+                  Fill: =If(ThisItem.'Trạng thái' = "Đạt", RGBA(228, 244, 235, 1), If(ThisItem.'Trạng thái' = "Dưới kế hoạch", RGBA(252, 231, 232, 1), RGBA(253, 243, 224, 1)))
+                  Height: =18
+                  Width: =120
+                  X: =950
+                  Y: =4
+            - td11:
+                Control: Label
+                Properties:
+                  Align: =Align.Center
+                  Color: =If(ThisItem.'Trạng thái' = "Đạt", RGBA(22, 148, 84, 1), If(ThisItem.'Trạng thái' = "Dưới kế hoạch", RGBA(203, 44, 49, 1), RGBA(214, 138, 12, 1)))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =18
+                  Size: =10
+                  Text: =ThisItem.'Trạng thái'
+                  VerticalAlign: =VerticalAlign.Middle
+                  Width: =120
+                  Wrap: =false
+                  X: =950
+                  Y: =4
+            - tdClick:
+                Control: Rectangle
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  Height: =25
+                  OnSelect: |
+                    =Set(varBanGhi, ThisItem);
+                    Set(varLaMoi, false);
+                    Set(varReset, !varReset);
+                    Navigate(scrNhapLieu, ScreenTransition.Fade)
+                  Width: =1282
+                  X: =0
+                  Y: =0
