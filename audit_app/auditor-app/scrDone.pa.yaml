@@ -1,0 +1,379 @@
+Screens:
+  scrDone:
+    Properties:
+      Fill: =RGBA(255, 255, 255, 1)
+      OnVisible: =Set(gblHomeConfirm, false)
+    Children:
+      - DoneRoot:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            Width: =Parent.Width
+          Children:
+            - DoneHeader:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =8
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  Width: =Parent.Width
+                Children:
+                  - DoneHeaderHome:
+                      Control: Classic/Icon
+                      Properties:
+                        AccessibleLabel: ="Về màn hình đầu"
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Height: =44
+                        Icon: =Icon.Home
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        OnSelect: |-
+                          =If(
+                              CountRows(colChecklist) > 0 && !gblHomeConfirm,
+                              Set(gblHomeConfirm, true);
+                              Notify("Nhấn biểu tượng nhà lần nữa để huỷ phiên kiểm tra.", NotificationType.Warning, 4000),
+                              Clear(colChecklist);
+                              Set(gblHomeConfirm, false);
+                              Navigate(Screen1, ScreenTransition.Fade)
+                          )
+                        PaddingBottom: =10
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =10
+                        TabIndex: =0
+                        Width: =44
+                  - DoneHeaderTitle:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Site Inspection"
+                        Align: =Align.Center
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        FontWeight: =FontWeight.Semibold
+                        Height: =28
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =17
+                        Text: ="Site Inspection"
+                        Wrap: =false
+                  - DoneHeaderAvatar:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        Fill: =RGBA(240, 214, 138, 1)
+                        FillPortions: =0
+                        Height: =44
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusBottomLeft: =22
+                        RadiusBottomRight: =22
+                        RadiusTopLeft: =22
+                        RadiusTopRight: =22
+                        Width: =44
+                      Children:
+                        - DoneHeaderInitials:
+                            Control: ModernText
+                            Properties:
+                              AccessibleLabel: =AppUserName
+                              Align: =Align.Center
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(32, 31, 30, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =AppUserInitials
+                              Wrap: =false
+            - DoneBody:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =460
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =14
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =40
+                  Width: =Parent.Width
+                Children:
+                  - DoneIconCircle:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        Fill: =RGBA(14, 116, 60, 1)
+                        FillPortions: =0
+                        Height: =88
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusBottomLeft: =44
+                        RadiusBottomRight: =44
+                        RadiusTopLeft: =44
+                        RadiusTopRight: =44
+                        Width: =88
+                      Children:
+                        - DoneIconCheck:
+                            Control: Classic/Icon
+                            Properties:
+                              AccessibleLabel: ="Đã gửi thành công"
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(255, 255, 255, 1)
+                              Height: =48
+                              Icon: =Icon.Check
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              PaddingBottom: =4
+                              PaddingLeft: =4
+                              PaddingRight: =4
+                              PaddingTop: =4
+                              Width: =48
+                  - DoneLblTitle:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Đã gửi audit"
+                        Align: =Align.Center
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(32, 31, 30, 1)
+                        FontWeight: =FontWeight.Bold
+                        Height: =34
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =24
+                        Text: ="Đã gửi audit"
+                        Wrap: =false
+                  - DoneLblZone:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Khu vực đã kiểm tra — " & First(colSubmitted).ZoneTitle & " — mẫu " & First(colSubmitted).TemplateTitle
+                        Align: =Align.Center
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(120, 120, 125, 1)
+                        Height: =18
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =13
+                        Text: =First(colSubmitted).ZoneTitle & " • " & First(colSubmitted).TemplateTitle
+                        Wrap: =false
+                  - DoneScoreRow:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =96
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                      Children:
+                        - DoneScoreTile:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(244, 245, 247, 1)
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =120
+                              PaddingBottom: =14
+                              PaddingLeft: =6
+                              PaddingRight: =6
+                              PaddingTop: =14
+                              RadiusBottomLeft: =6
+                              RadiusBottomRight: =6
+                              RadiusTopLeft: =6
+                              RadiusTopRight: =6
+                            Children:
+                              - DoneLblScoreValue:
+                                  Control: ModernText
+                                  Properties:
+                                    AccessibleLabel: ="Điểm tuân thủ " & Text(First(colSubmitted).RunScore, "[$-en-US]0.0") & " phần trăm"
+                                    Align: =Align.Center
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Color: |-
+                                      =If(
+                                          First(colSubmitted).RunScore >= 90, RGBA(14, 116, 60, 1),
+                                          First(colSubmitted).RunScore >= 75, RGBA(224, 164, 10, 1),
+                                          RGBA(184, 37, 30, 1)
+                                      )
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =38
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    PaddingBottom: =0
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    Size: =28
+                                    Text: =Text(First(colSubmitted).RunScore, "[$-en-US]0.0") & "%"
+                                    Wrap: =false
+                              - DoneLblScoreCaption:
+                                  Control: ModernText
+                                  Properties:
+                                    AccessibleLabel: ="Điểm tuân thủ"
+                                    Align: =Align.Center
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Color: =RGBA(120, 120, 125, 1)
+                                    Height: =16
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    PaddingBottom: =0
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    Size: =12
+                                    Text: ="Điểm tuân thủ"
+                                    Wrap: =false
+                        - DoneFailTile:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(244, 245, 247, 1)
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =120
+                              PaddingBottom: =14
+                              PaddingLeft: =6
+                              PaddingRight: =6
+                              PaddingTop: =14
+                              RadiusBottomLeft: =6
+                              RadiusBottomRight: =6
+                              RadiusTopLeft: =6
+                              RadiusTopRight: =6
+                            Children:
+                              - DoneLblFailValue:
+                                  Control: ModernText
+                                  Properties:
+                                    AccessibleLabel: ="Số lỗi cần khắc phục — " & First(colSubmitted).RunFailCount
+                                    Align: =Align.Center
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Color: =RGBA(184, 37, 30, 1)
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =38
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    PaddingBottom: =0
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    Size: =28
+                                    Text: =First(colSubmitted).RunFailCount & ""
+                                    Wrap: =false
+                              - DoneLblFailCaption:
+                                  Control: ModernText
+                                  Properties:
+                                    AccessibleLabel: ="Lỗi cần khắc phục"
+                                    Align: =Align.Center
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Color: =RGBA(120, 120, 125, 1)
+                                    Height: =16
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    PaddingBottom: =0
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    Size: =12
+                                    Text: ="Lỗi cần khắc phục"
+                                    Wrap: =false
+                  - DoneLblNotes:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Ghi chú chung của lượt kiểm tra — " & First(colSubmitted).GeneralNotes
+                        Align: =Align.Center
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(120, 120, 125, 1)
+                        Height: =40
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =12
+                        Text: |-
+                          =If(
+                              IsBlank(First(colSubmitted).GeneralNotes),
+                              "",
+                              "Ghi chú — " & First(colSubmitted).GeneralNotes
+                          )
+                        VerticalAlign: =VerticalAlign.Top
+                  - DoneBtnNew:
+                      Control: ModernButton
+                      Properties:
+                        AccessibleLabel: ="Bắt đầu lượt kiểm tra mới"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        BasePaletteColor: =RGBA(60, 74, 82, 1)
+                        Color: =RGBA(255, 255, 255, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =48
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        OnSelect: |-
+                          =Clear(colChecklist);
+                          Set(gblCurrentItemId, 0);
+                          Set(gblFailDesc, "");
+                          Set(gblFailSeverity, "Critical");
+                          Set(gblFailAssigneeName, "");
+                          Set(gblShowFailPanel, false);
+                          Set(gblShowCamera, false);
+                          Set(gblSubmitting, false);
+                          Set(gblCancelConfirm, false);
+                          Set(gblHomeConfirm, false);
+                          Navigate(Screen1, ScreenTransition.Fade)
+                        Size: =15
+                        Text: ="Bắt đầu lượt mới"
+                        Width: =Parent.Width

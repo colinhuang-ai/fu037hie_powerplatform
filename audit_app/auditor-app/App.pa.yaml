@@ -1,0 +1,115 @@
+App:
+  Properties:
+    Formulas: |-
+      =AppUserName = Coalesce(User().FullName, "Auditor Factory");
+
+      AppUserInitials = Upper(
+          Concat(
+              FirstN(Split(AppUserName, " "), 2),
+              Left(ThisRecord.Value, 1)
+          )
+      );
+
+      TotalCount = CountRows(colChecklist);
+
+      AnsweredCount = CountRows(Filter(colChecklist, !IsBlank(Result)));
+
+      RemainingCount = CountRows(colChecklist) - CountRows(Filter(colChecklist, !IsBlank(Result)));
+
+      PassCount = CountRows(Filter(colChecklist, Result = "Pass"));
+
+      FailCount = CountRows(Filter(colChecklist, Result = "Fail"));
+
+      NACount = CountRows(Filter(colChecklist, Result = "NA"));
+
+      FailList = Filter(colChecklist, Result = "Fail");
+
+      ComplianceScore = With(
+          {
+              applicable: CountRows(Filter(colChecklist, Result in ["Pass", "Fail"])),
+              passed: CountRows(Filter(colChecklist, Result = "Pass"))
+          },
+          If(applicable = 0, 100, Round(passed / applicable * 100, 1))
+      );
+
+      IsAuditComplete = CountRows(colChecklist) > 0
+          && CountRows(Filter(colChecklist, !IsBlank(Result))) = CountRows(colChecklist);
+    OnStart: |-
+      =ClearCollect(
+          colZones,
+          {ZoneId: 1, Title: "Xưởng A - Dây chuyền 1", ZoneCode: "ZA-L1", Address: "Lô 12, KCN Quang Minh, Hà Nội", Description: "Khu lắp ráp chính, 3 ca mỗi ngày, 42 công nhân."},
+          {ZoneId: 2, Title: "Xưởng A - Kho nguyên liệu", ZoneCode: "ZA-WH", Address: "Lô 12, KCN Quang Minh, Hà Nội", Description: "Kho kệ cao 6m, xe nâng hoạt động liên tục."},
+          {ZoneId: 3, Title: "Xưởng B - Sơn tĩnh điện", ZoneCode: "ZB-PT", Address: "Lô 14, KCN Quang Minh, Hà Nội", Description: "Khu vực hoá chất, bắt buộc mang PPE đầy đủ."},
+          {ZoneId: 4, Title: "Xưởng B - Đóng gói", ZoneCode: "ZB-PK", Address: "Lô 14, KCN Quang Minh, Hà Nội", Description: "Băng chuyền đóng gói và khu pallet thành phẩm."},
+          {ZoneId: 5, Title: "Khu kỹ thuật - Máy nén khí", ZoneCode: "TE-AC", Address: "Lô 16, KCN Quang Minh, Hà Nội", Description: "Phòng máy nén khí, tiếng ồn cao, ra vào hạn chế."}
+      );
+      ClearCollect(
+          colTemplates,
+          {TemplateId: 1, Title: "5S - Kiểm tra hàng tuần"},
+          {TemplateId: 2, Title: "An toàn lao động - Hàng ngày"}
+      );
+      ClearCollect(
+          colItems,
+          {ItemId: 1, TemplateId: 1, OrderNumber: 1, IsCritical: false, Question: "Lối đi và khu thao tác có được giữ thông thoáng không?"},
+          {ItemId: 2, TemplateId: 1, OrderNumber: 2, IsCritical: false, Question: "Dụng cụ có được trả về đúng vị trí đã đánh dấu không?"},
+          {ItemId: 3, TemplateId: 1, OrderNumber: 3, IsCritical: true, Question: "Khu vực có sạch, không dầu mỡ rơi vãi trên sàn không?"},
+          {ItemId: 4, TemplateId: 1, OrderNumber: 4, IsCritical: false, Question: "Bảng 5S có được cập nhật trong 7 ngày gần nhất không?"},
+          {ItemId: 5, TemplateId: 2, OrderNumber: 1, IsCritical: true, Question: "Thiết bị an toàn có được lắp đặt đúng và còn tốt không?"},
+          {ItemId: 6, TemplateId: 2, OrderNumber: 2, IsCritical: true, Question: "Công nhân có mang đủ PPE theo quy định khu vực không?"},
+          {ItemId: 7, TemplateId: 2, OrderNumber: 3, IsCritical: true, Question: "Bình chữa cháy còn hạn kiểm định và dễ tiếp cận không?"},
+          {ItemId: 8, TemplateId: 2, OrderNumber: 4, IsCritical: false, Question: "Biển cảnh báo nguy hiểm có rõ ràng và đúng vị trí không?"}
+      );
+      ClearCollect(
+          colUsers,
+          {UserId: 1, Name: "Trần Minh Quân", Email: "quan.tran@factory.vn"},
+          {UserId: 2, Name: "Lê Thị Hồng", Email: "hong.le@factory.vn"},
+          {UserId: 3, Name: "Phạm Văn Đức", Email: "duc.pham@factory.vn"},
+          {UserId: 4, Name: "Nguyễn Thu Hà", Email: "ha.nguyen@factory.vn"},
+          {UserId: 5, Name: "Đỗ Anh Tuấn", Email: "tuan.do@factory.vn"}
+      );
+      ClearCollect(
+          colChecklist,
+          {
+              ItemId: 0,
+              OrderNumber: 0,
+              Question: "",
+              IsCritical: false,
+              Result: "",
+              FailDesc: "",
+              FailSeverity: "",
+              FailAssigneeName: "",
+              FailAssigneeEmail: "",
+              FailPhoto: ""
+          }
+      );
+      Clear(colChecklist);
+      ClearCollect(
+          colSubmitted,
+          {
+              RunId: "",
+              ZoneTitle: "",
+              ZoneCode: "",
+              TemplateTitle: "",
+              SubmittedAt: Now(),
+              RunScore: 0,
+              RunPassCount: 0,
+              RunFailCount: 0,
+              RunNACount: 0,
+              RunTotalItems: 0,
+              GeneralNotes: ""
+          }
+      );
+      Clear(colSubmitted);
+      Set(gblZone, First(colZones));
+      Set(gblTemplate, First(colTemplates));
+      Set(gblCurrentItemId, 0);
+      Set(gblFailDesc, "");
+      Set(gblFailSeverity, "Critical");
+      Set(gblFailAssigneeName, "");
+      Set(gblShowFailPanel, false);
+      Set(gblShowCamera, false);
+      Set(gblSubmitting, false);
+      Set(gblCancelConfirm, false);
+      Set(gblHomeConfirm, false)
+    StartScreen: =Screen1
+    Theme: =PowerAppsTheme

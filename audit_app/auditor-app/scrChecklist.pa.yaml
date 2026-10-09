@@ -1,0 +1,890 @@
+Screens:
+  scrChecklist:
+    Properties:
+      Fill: =RGBA(255, 255, 255, 1)
+      OnVisible: |-
+        =Set(gblHomeConfirm, false);
+        Set(gblCancelConfirm, false);
+        Set(gblShowFailPanel, false);
+        Set(gblShowCamera, false)
+    Children:
+      - ChkRoot:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =Parent.Height - 92
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            Width: =Parent.Width
+          Children:
+            - ChkHeader:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =8
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  Width: =Parent.Width
+                Children:
+                  - ChkHeaderHome:
+                      Control: Classic/Icon
+                      Properties:
+                        AccessibleLabel: ="Về màn hình đầu"
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Height: =44
+                        Icon: =Icon.Home
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        OnSelect: |-
+                          =If(
+                              CountRows(colChecklist) > 0 && !gblHomeConfirm,
+                              Set(gblHomeConfirm, true);
+                              Notify("Nhấn biểu tượng nhà lần nữa để huỷ phiên kiểm tra.", NotificationType.Warning, 4000),
+                              Clear(colChecklist);
+                              Set(gblHomeConfirm, false);
+                              Navigate(Screen1, ScreenTransition.Fade)
+                          )
+                        PaddingBottom: =10
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =10
+                        TabIndex: =0
+                        Width: =44
+                  - ChkHeaderTitle:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Site Inspection"
+                        Align: =Align.Center
+                        AlignInContainer: =AlignInContainer.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        FontWeight: =FontWeight.Semibold
+                        Height: =28
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =17
+                        Text: ="Site Inspection"
+                        Wrap: =false
+                  - ChkHeaderAvatar:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        Fill: =RGBA(240, 214, 138, 1)
+                        FillPortions: =0
+                        Height: =44
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusBottomLeft: =22
+                        RadiusBottomRight: =22
+                        RadiusTopLeft: =22
+                        RadiusTopRight: =22
+                        Width: =44
+                      Children:
+                        - ChkHeaderInitials:
+                            Control: ModernText
+                            Properties:
+                              AccessibleLabel: =AppUserName
+                              Align: =Align.Center
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(32, 31, 30, 1)
+                              FontWeight: =FontWeight.Semibold
+                              Height: =20
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =AppUserInitials
+                              Wrap: =false
+            - ChkProgressSection:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(248, 248, 249, 1)
+                  FillPortions: =0
+                  Height: =52
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =6
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =10
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =10
+                  Width: =Parent.Width
+                Children:
+                  - ChkLblProgress:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Tiến độ trả lời"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(120, 120, 125, 1)
+                        Height: =18
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =12
+                        Text: =AnsweredCount & " / " & TotalCount & " câu hỏi"
+                        Wrap: =false
+                  - ChkProgTrack:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(225, 227, 231, 1)
+                        FillPortions: =0
+                        Height: =6
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusBottomLeft: =3
+                        RadiusBottomRight: =3
+                        RadiusTopLeft: =3
+                        RadiusTopRight: =3
+                      Children:
+                        - ChkProgFill:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(60, 74, 82, 1)
+                              FillPortions: =0
+                              Height: =6
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusBottomLeft: =3
+                              RadiusBottomRight: =3
+                              RadiusTopLeft: =3
+                              RadiusTopRight: =3
+                              Width: =Parent.Width * (AnsweredCount / Max(TotalCount, 1))
+            - ChkGallery:
+                Control: Gallery
+                Variant: Vertical
+                Properties:
+                  AccessibleLabel: ="Danh sách câu hỏi kiểm tra"
+                  Fill: =RGBA(244, 245, 247, 1)
+                  FillPortions: =0
+                  Height: =Self.AllItemsCount * Self.TemplateHeight + ((Self.AllItemsCount + 1) * Self.TemplatePadding)
+                  Items: =colChecklist
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  Selectable: =false
+                  ShowScrollbar: =false
+                  TabIndex: =0
+                  TemplatePadding: =8
+                  TemplateSize: =228
+                  Width: =Parent.Width
+                Children:
+                  - ChkRowShell:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(255, 255, 255, 1)
+                        Height: =Parent.TemplateHeight
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        PaddingBottom: =14
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =14
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        Width: =Parent.TemplateWidth
+                      Children:
+                        - ChkLblQuestion:
+                            Control: ModernText
+                            Properties:
+                              AccessibleLabel: =ThisItem.Question
+                              AlignInContainer: =AlignInContainer.Stretch
+                              Color: =RGBA(32, 31, 30, 1)
+                              Height: =42
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =14
+                              Text: =ThisItem.Question
+                              VerticalAlign: =VerticalAlign.Top
+                        - ChkAnswerRow:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =48
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =8
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                            Children:
+                              - ChkRadioAnswer:
+                                  Control: ModernRadio
+                                  Properties:
+                                    AccessibleLabel: ="Kết quả kiểm tra cho câu hỏi này"
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(32, 31, 30, 1)
+                                    Default: |-
+                                      =LookUp(
+                                          ["Yes", "No", "N/A"],
+                                          Value = Switch(ThisItem.Result, "Pass", "Yes", "Fail", "No", "NA", "N/A", "")
+                                      )
+                                    FillPortions: =1
+                                    Height: =48
+                                    Items: =["Yes", "No", "N/A"]
+                                    Layout: =OptionLayout.Horizontal
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    OnChange: |-
+                                      =With(
+                                          {
+                                              rowId: ThisItem.ItemId,
+                                              ans: Switch(
+                                                  Self.Selected.Value,
+                                                  "Yes", "Pass",
+                                                  "No", "Fail",
+                                                  "N/A", "NA",
+                                                  ""
+                                              )
+                                          },
+                                          If(
+                                              ans = "Fail",
+                                              Patch(colChecklist, LookUp(colChecklist, ItemId = rowId), {Result: "Fail"});
+                                              Set(gblCurrentItemId, rowId);
+                                              Set(gblFailDesc, LookUp(colChecklist, ItemId = rowId).FailDesc);
+                                              Set(
+                                                  gblFailSeverity,
+                                                  Coalesce(
+                                                      LookUp(colChecklist, ItemId = rowId).FailSeverity,
+                                                      If(LookUp(colChecklist, ItemId = rowId).IsCritical, "Critical", "Medium")
+                                                  )
+                                              );
+                                              Set(gblFailAssigneeName, LookUp(colChecklist, ItemId = rowId).FailAssigneeName);
+                                              Reset(ChkFailTxtDesc);
+                                              Reset(ChkFailDdSeverity);
+                                              Reset(ChkFailCmbAssignee);
+                                              Set(gblShowFailPanel, true),
+                                              Patch(
+                                                  colChecklist,
+                                                  LookUp(colChecklist, ItemId = rowId),
+                                                  {
+                                                      Result: ans,
+                                                      FailDesc: "",
+                                                      FailSeverity: "",
+                                                      FailAssigneeName: "",
+                                                      FailAssigneeEmail: ""
+                                                  }
+                                              )
+                                          )
+                                      )
+                                    Size: =14
+                              - ChkIconCamera:
+                                  Control: Classic/Icon
+                                  Properties:
+                                    AccessibleLabel: ="Chụp ảnh cho câu hỏi này"
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =RGBA(60, 74, 82, 1)
+                                    Height: =44
+                                    Icon: =Icon.Camera
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    OnSelect: |-
+                                      =Set(gblCurrentItemId, ThisItem.ItemId);
+                                      Set(gblShowCamera, true)
+                                    PaddingBottom: =10
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =10
+                                    TabIndex: =0
+                                    Width: =44
+                              - ChkIconDetail:
+                                  Control: Classic/Icon
+                                  Properties:
+                                    AccessibleLabel: ="Chi tiết lỗi"
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Color: =If(ThisItem.Result = "Fail", RGBA(184, 37, 30, 1), RGBA(200, 203, 206, 1))
+                                    DisplayMode: =If(ThisItem.Result = "Fail", DisplayMode.Edit, DisplayMode.Disabled)
+                                    Height: =44
+                                    Icon: =Icon.Edit
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    OnSelect: |-
+                                      =Set(gblCurrentItemId, ThisItem.ItemId);
+                                      Set(gblFailDesc, LookUp(colChecklist, ItemId = ThisItem.ItemId).FailDesc);
+                                      Set(
+                                          gblFailSeverity,
+                                          Coalesce(
+                                              LookUp(colChecklist, ItemId = ThisItem.ItemId).FailSeverity,
+                                              If(ThisItem.IsCritical, "Critical", "Medium")
+                                          )
+                                      );
+                                      Set(gblFailAssigneeName, LookUp(colChecklist, ItemId = ThisItem.ItemId).FailAssigneeName);
+                                      Reset(ChkFailTxtDesc);
+                                      Reset(ChkFailDdSeverity);
+                                      Reset(ChkFailCmbAssignee);
+                                      Set(gblShowFailPanel, true)
+                                    PaddingBottom: =10
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =10
+                                    TabIndex: =0
+                                    Width: =44
+                        - ChkPhotoRow:
+                            Control: GroupContainer
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =90
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =10
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                            Children:
+                              - ChkAddMedia:
+                                  Control: AddMedia
+                                  Properties:
+                                    AccessibleLabel: ="Chọn ảnh có sẵn từ máy cho câu hỏi này"
+                                    Align: =Align.Center
+                                    AlignInContainer: =AlignInContainer.Center
+                                    BorderColor: =RGBA(214, 216, 219, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    ChangePictureText: ="Đổi ảnh"
+                                    Color: =RGBA(60, 74, 82, 1)
+                                    Fill: =RGBA(242, 242, 243, 1)
+                                    FillPortions: =0
+                                    Height: =40
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    OnChange: |-
+                                      =Patch(
+                                          colChecklist,
+                                          LookUp(colChecklist, ItemId = ThisItem.ItemId),
+                                          {FailPhoto: Self.Media}
+                                      );
+                                      Notify("Đã đính kèm ảnh cho câu hỏi này.", NotificationType.Success, 2000)
+                                    Padding: =0
+                                    Size: =12
+                                    TabIndex: =0
+                                    Text: ="Chọn ảnh"
+                                    UseMobileCamera: =false
+                                    Width: =120
+                              - ChkRemoveCircle:
+                                  Control: GroupContainer
+                                  Variant: AutoLayout
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Fill: =RGBA(184, 37, 30, 1)
+                                    FillPortions: =0
+                                    Height: =32
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusBottomLeft: =16
+                                    RadiusBottomRight: =16
+                                    RadiusTopLeft: =16
+                                    RadiusTopRight: =16
+                                    Visible: =!IsBlank(ThisItem.FailPhoto)
+                                    Width: =32
+                                  Children:
+                                    - ChkIconRemovePhoto:
+                                        Control: Classic/Icon
+                                        Properties:
+                                          AccessibleLabel: ="Xoá ảnh của câu hỏi này"
+                                          AlignInContainer: =AlignInContainer.Center
+                                          Color: =RGBA(255, 255, 255, 1)
+                                          Height: =32
+                                          Icon: =Icon.Cancel
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          OnSelect: |-
+                                            =Patch(
+                                                colChecklist,
+                                                LookUp(colChecklist, ItemId = ThisItem.ItemId),
+                                                {FailPhoto: ""}
+                                            );
+                                            Notify("Đã xoá ảnh của câu hỏi này.", NotificationType.Success, 2000)
+                                          PaddingBottom: =9
+                                          PaddingLeft: =9
+                                          PaddingRight: =9
+                                          PaddingTop: =9
+                                          TabIndex: =0
+                                          Width: =32
+                              - ChkImgThumb:
+                                  Control: Image
+                                  Properties:
+                                    AccessibleLabel: ="Ảnh đã chụp cho câu hỏi này"
+                                    AlignInContainer: =AlignInContainer.Center
+                                    BorderColor: =RGBA(214, 214, 214, 1)
+                                    BorderThickness: =1
+                                    Height: =90
+                                    Image: =ThisItem.FailPhoto
+                                    ImagePosition: =ImagePosition.Fill
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusBottomLeft: =2
+                                    RadiusBottomRight: =2
+                                    RadiusTopLeft: =2
+                                    RadiusTopRight: =2
+                                    Visible: =!IsBlank(ThisItem.FailPhoto)
+                                    Width: =90
+      - ChkFooter:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(214, 214, 214, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =92
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =8
+            Width: =Parent.Width
+            Y: =Parent.Height - 92
+          Children:
+            - ChkLblHint:
+                Control: ModernText
+                Properties:
+                  AccessibleLabel: ="Số câu hỏi còn lại"
+                  Align: =Align.Right
+                  AlignInContainer: =AlignInContainer.Stretch
+                  Color: =RGBA(184, 37, 30, 1)
+                  Height: =18
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =12
+                  Text: =If(!IsAuditComplete, "Còn " & RemainingCount & " câu chưa trả lời", "")
+                  Wrap: =false
+            - ChkFooterBtns:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =0
+                  Height: =44
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =10
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                Children:
+                  - ChkBtnCancel:
+                      Control: ModernButton
+                      Properties:
+                        AccessibleLabel: ="Huỷ phiên kiểm tra"
+                        AlignInContainer: =AlignInContainer.Center
+                        Appearance: =ButtonAppearance.Secondary
+                        Color: =RGBA(32, 31, 30, 1)
+                        Height: =44
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        OnSelect: |-
+                          =If(
+                              !gblCancelConfirm,
+                              Set(gblCancelConfirm, true);
+                              Notify("Nhấn Huỷ lần nữa để xoá toàn bộ câu trả lời.", NotificationType.Warning, 4000),
+                              Clear(colChecklist);
+                              Set(gblCancelConfirm, false);
+                              Navigate(Screen1, ScreenTransition.Fade)
+                          )
+                        Size: =14
+                        Text: ="Huỷ"
+                        Width: =90
+                  - ChkBtnBack:
+                      Control: ModernButton
+                      Properties:
+                        AccessibleLabel: ="Quay lại chọn khu vực"
+                        AlignInContainer: =AlignInContainer.Center
+                        Appearance: =ButtonAppearance.Secondary
+                        Color: =RGBA(32, 31, 30, 1)
+                        Height: =44
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        OnSelect: =Navigate(Screen1, ScreenTransition.Fade)
+                        Size: =18
+                        Text: ="‹"
+                        Width: =56
+                  - ChkBtnSubmit:
+                      Control: ModernButton
+                      Properties:
+                        AccessibleLabel: ="Xem lại và gửi"
+                        AlignInContainer: =AlignInContainer.Center
+                        BasePaletteColor: =If(IsAuditComplete, RGBA(60, 74, 82, 1), RGBA(200, 203, 206, 1))
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisplayMode: =If(IsAuditComplete, DisplayMode.Edit, DisplayMode.Disabled)
+                        FillPortions: =1
+                        Height: =44
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =120
+                        OnSelect: =Navigate(scrReview, ScreenTransition.Fade)
+                        Size: =14
+                        Text: ="Gửi"
+      - ChkFailOverlay:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.55)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.End
+            Visible: =gblShowFailPanel
+            Width: =Parent.Width
+          Children:
+            - ChkFailPanel:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =Min(Parent.Height - 40, 464)
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =12
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =20
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Width: =Parent.Width
+                Children:
+                  - ChkFailTitle:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Chi tiết lỗi"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(32, 31, 30, 1)
+                        FontWeight: =FontWeight.Semibold
+                        Height: =24
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =17
+                        Text: ="Chi tiết lỗi"
+                        Wrap: =false
+                  - ChkFailQuestion:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Câu hỏi đang xử lý"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(120, 120, 125, 1)
+                        Height: =40
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =13
+                        Text: =LookUp(colChecklist, ItemId = gblCurrentItemId).Question
+                        VerticalAlign: =VerticalAlign.Top
+                  - ChkFailLblDesc:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Mô tả lỗi"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(120, 120, 125, 1)
+                        Height: =16
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =12
+                        Text: ="Mô tả lỗi"
+                        Wrap: =false
+                  - ChkFailTxtDesc:
+                      Control: ModernTextInput
+                      Properties:
+                        AccessibleLabel: ="Mô tả lỗi phát hiện"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(32, 31, 30, 1)
+                        Default: =gblFailDesc
+                        Height: =88
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Size: =14
+                        Type: =TextInputType.Multiline
+                  - ChkFailLblSeverity:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Mức độ rủi ro"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(120, 120, 125, 1)
+                        Height: =16
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =12
+                        Text: ="Mức độ rủi ro"
+                        Wrap: =false
+                  - ChkFailDdSeverity:
+                      Control: ModernDropdown
+                      Properties:
+                        AccessibleLabel: ="Chọn mức độ rủi ro"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(32, 31, 30, 1)
+                        Default: =LookUp(["Low", "Medium", "High", "Critical"], Value = gblFailSeverity)
+                        Height: =44
+                        ItemDisplayText: =ThisItem.Value
+                        Items: =["Low", "Medium", "High", "Critical"]
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Size: =14
+                  - ChkFailLblAssignee:
+                      Control: ModernText
+                      Properties:
+                        AccessibleLabel: ="Người khắc phục"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(120, 120, 125, 1)
+                        Height: =16
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =12
+                        Text: ="Người khắc phục"
+                        Wrap: =false
+                  - ChkFailCmbAssignee:
+                      Control: ModernCombobox
+                      Properties:
+                        AccessibleLabel: ="Chọn người khắc phục"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Color: =RGBA(32, 31, 30, 1)
+                        DefaultSelectedItems: =Filter(colUsers, Name = gblFailAssigneeName)
+                        Height: =44
+                        ItemDisplayText: =ThisItem.Name
+                        Items: =colUsers
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        Size: =14
+                  - ChkFailBtnRow:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =0
+                        Height: =44
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =10
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                      Children:
+                        - ChkFailBtnCancel:
+                            Control: ModernButton
+                            Properties:
+                              AccessibleLabel: ="Đóng chi tiết lỗi"
+                              AlignInContainer: =AlignInContainer.Center
+                              Appearance: =ButtonAppearance.Secondary
+                              Color: =RGBA(32, 31, 30, 1)
+                              FillPortions: =1
+                              Height: =44
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =100
+                              OnSelect: |-
+                                =With(
+                                    {row: LookUp(colChecklist, ItemId = gblCurrentItemId)},
+                                    If(IsBlank(row.FailDesc), Patch(colChecklist, row, {Result: ""}))
+                                );
+                                Set(gblShowFailPanel, false)
+                              Size: =14
+                              Text: ="Huỷ"
+                        - ChkFailBtnSave:
+                            Control: ModernButton
+                            Properties:
+                              AccessibleLabel: ="Lưu chi tiết lỗi"
+                              AlignInContainer: =AlignInContainer.Center
+                              BasePaletteColor: |-
+                                =If(
+                                    IsBlank(Trim(ChkFailTxtDesc.Text))
+                                        || IsBlank(ChkFailDdSeverity.Selected.Value)
+                                        || IsBlank(ChkFailCmbAssignee.Selected.Name),
+                                    RGBA(200, 203, 206, 1),
+                                    RGBA(60, 74, 82, 1)
+                                )
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisplayMode: |-
+                                =If(
+                                    IsBlank(Trim(ChkFailTxtDesc.Text))
+                                        || IsBlank(ChkFailDdSeverity.Selected.Value)
+                                        || IsBlank(ChkFailCmbAssignee.Selected.Name),
+                                    DisplayMode.Disabled,
+                                    DisplayMode.Edit
+                                )
+                              FillPortions: =1
+                              Height: =44
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =100
+                              OnSelect: |-
+                                =Patch(
+                                    colChecklist,
+                                    LookUp(colChecklist, ItemId = gblCurrentItemId),
+                                    {
+                                        Result: "Fail",
+                                        FailDesc: Trim(ChkFailTxtDesc.Text),
+                                        FailSeverity: ChkFailDdSeverity.Selected.Value,
+                                        FailAssigneeName: ChkFailCmbAssignee.Selected.Name,
+                                        FailAssigneeEmail: ChkFailCmbAssignee.Selected.Email
+                                    }
+                                );
+                                Set(gblShowFailPanel, false);
+                                Notify("Đã lưu chi tiết lỗi.", NotificationType.Success, 2000)
+                              Size: =14
+                              Text: ="Lưu lỗi"
+      - ChkCamOverlay:
+          Control: GroupContainer
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.55)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            PaddingLeft: =16
+            PaddingRight: =16
+            Visible: =gblShowCamera
+            Width: =Parent.Width
+          Children:
+            - ChkCamPanel:
+                Control: GroupContainer
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Center
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =34 + (Parent.Width * 0.88 * 0.75) + 52
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  RadiusBottomLeft: =6
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =6
+                  RadiusTopRight: =6
+                  Width: =Parent.Width * 0.88
+                Children:
+                  - ChkCamCaptionBar:
+                      Control: GroupContainer
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =RGBA(238, 238, 239, 1)
+                        FillPortions: =0
+                        Height: =34
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                      Children:
+                        - ChkCamCaptionText:
+                            Control: ModernText
+                            Properties:
+                              AccessibleLabel: ="Chạm vào khung để chụp ảnh"
+                              Align: =Align.Center
+                              AlignInContainer: =AlignInContainer.Center
+                              Color: =RGBA(32, 31, 30, 1)
+                              FillPortions: =1
+                              Height: =20
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =13
+                              Text: ="Click inside the frame to capture"
+                              Wrap: =false
+                  - ChkCamera:
+                      Control: Camera
+                      Properties:
+                        AccessibleLabel: ="Khung chụp ảnh - chạm để chụp"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Height: =Parent.Width * 0.75
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        OnSelect: |-
+                          =Patch(
+                              colChecklist,
+                              LookUp(colChecklist, ItemId = gblCurrentItemId),
+                              {FailPhoto: Self.Photo}
+                          );
+                          Set(gblShowCamera, false);
+                          Notify("Đã lưu ảnh cho câu hỏi này.", NotificationType.Success, 2000)
+                        Width: =Parent.Width
+                  - ChkCamBtnClose:
+                      Control: ModernButton
+                      Properties:
+                        AccessibleLabel: ="Đóng khung chụp ảnh"
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Appearance: =ButtonAppearance.Secondary
+                        Color: =RGBA(32, 31, 30, 1)
+                        Height: =52
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        OnSelect: =Set(gblShowCamera, false)
+                        Size: =14
+                        Text: ="Đóng"
+                        Width: =Parent.Width

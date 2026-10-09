@@ -1,0 +1,6 @@
+EditorState:
+  ScreensOrder:
+    - Screen1
+    - scrChecklist
+    - scrDone
+    - scrReview
