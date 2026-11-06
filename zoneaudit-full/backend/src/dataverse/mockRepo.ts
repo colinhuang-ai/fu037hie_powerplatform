@@ -72,6 +72,10 @@ export class MockRepo implements Repo {
   }
 }
 
+/**
+ * Master data only (zones, templates, items). Transactional demo history - runs, findings, photos -
+ * lives in `seedDemo.ts`, so this stays the small, stable fixture the test-suite builds on.
+ */
 export function seedMockRepo(repo: MockRepo = new MockRepo()): MockRepo {
   const z = (title: string, zoneManager: string, description: string): Zone => ({
     id: randomUUID(), title, zoneManager, description, imageUrl: null,

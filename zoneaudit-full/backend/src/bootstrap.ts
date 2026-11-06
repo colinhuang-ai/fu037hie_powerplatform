@@ -6,6 +6,7 @@ import { Store } from './db.js';
 import { DataverseClient } from './dataverse/client.js';
 import { LiveRepo } from './dataverse/liveRepo.js';
 import { MockRepo, seedMockRepo } from './dataverse/mockRepo.js';
+import { DEMO_USERS, seedDemoData } from './dataverse/seedDemo.js';
 import type { Repo } from './dataverse/types.js';
 import { MasterCache, type AppContext } from './services/context.js';
 
@@ -24,8 +25,13 @@ export async function buildContext(cfg: Config, opts: BuildOptions = {}): Promis
       const dv = cfg.dataverse;
       repo = new LiveRepo(new DataverseClient({ url: dv.url!, tenantId: dv.tenantId!, clientId: dv.clientId!, clientSecret: dv.clientSecret! }), cfg.timezone);
     } else {
-      repo = seedMockRepo(new MockRepo());
+      const mock = seedMockRepo(new MockRepo());
       console.warn('[dataverse] MOCK mode: using in-memory sample data (set DATAVERSE_URL / AZURE_* for the real environment)');
+      if (cfg.demoSeed) {
+        const n = seedDemoData(mock, { uploadsDir: resolve(cfg.dataDir, 'uploads'), timezone: cfg.timezone });
+        console.log(`[demo] seeded ${n.zones} zones, ${n.templates} templates, ${n.runs} runs, ${n.findings} findings (DEMO_SEED=off to disable)`);
+      }
+      repo = mock;
     }
   }
 
@@ -35,25 +41,19 @@ export async function buildContext(cfg: Config, opts: BuildOptions = {}): Promis
   return { cfg, store, repo, googleVerifier, master: new MasterCache(repo) };
 }
 
-/** First run only: create the admin from env, plus demo accounts in development + mock mode only. */
+/** Creates the admin from env on first run; demo accounts are topped up every start in development + mock mode. */
 async function seedUsers(cfg: Config, store: Store) {
-  if (store.countUsers() > 0) return;
-
-  if (cfg.admin.email && cfg.admin.password) {
+  if (store.countUsers() === 0 && cfg.admin.email && cfg.admin.password) {
     store.createUser({ email: cfg.admin.email, name: cfg.admin.name, role: 'admin', passwordHash: await hashPassword(cfg.admin.password) });
     console.log(`[auth] created admin ${cfg.admin.email}`);
   }
 
+  // The seeded findings are assigned to these addresses, so missing ones are re-created rather than seeded once.
   if (cfg.env === 'development' && cfg.dataverse.mode === 'mock') {
-    const demo = [
-      { email: 'admin@demo.local', name: 'Demo Admin', role: 'admin' as const },
-      { email: 'auditor@demo.local', name: 'Demo Auditor', role: 'auditor' as const },
-      { email: 'fixer@demo.local', name: 'Demo Fixer', role: 'fixer' as const },
-    ];
-    for (const d of demo) {
+    for (const d of DEMO_USERS) {
       if (!store.getUserForLogin(d.email)) store.createUser({ ...d, passwordHash: await hashPassword('Demo@12345') });
     }
-    console.log('[auth] demo accounts: admin@demo.local / auditor@demo.local / fixer@demo.local  (password: Demo@12345)');
+    console.log(`[auth] demo accounts (password Demo@12345): ${DEMO_USERS.map((d) => d.email).join(', ')}`);
   }
 
   if (store.countUsers() === 0) {

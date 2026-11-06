@@ -17,6 +17,8 @@ const EnvSchema = z.object({
   TRUST_PROXY: opt(z.enum(['true', 'false'])),
 
   DATA_DIR: z.string().default('./data'),
+  /** Mock mode only: fill the in-memory repo with demo runs/findings. Set to `off` for an empty app. */
+  DEMO_SEED: z.enum(['on', 'off']).default('on'),
 
   // Dataverse (live mode). When any is missing the app falls back to the in-memory mock.
   DATAVERSE_MODE: opt(z.enum(['live', 'mock'])),
@@ -47,6 +49,7 @@ export interface Config {
   cookieSecure: boolean;
   trustProxy: boolean;
   dataDir: string;
+  demoSeed: boolean;
   dataverse: { mode: 'live' | 'mock'; url?: string; tenantId?: string; clientId?: string; clientSecret?: string };
   google: { clientId?: string; autoProvisionRole?: 'auditor' | 'fixer'; allowedDomains: string[] };
   admin: { email?: string; password?: string; name: string };
@@ -81,6 +84,7 @@ export function loadConfig(source: NodeJS.ProcessEnv = process.env): Config {
     cookieSecure: e.COOKIE_SECURE ? e.COOKIE_SECURE === 'true' : isProd,
     trustProxy: e.TRUST_PROXY === 'true',
     dataDir: e.DATA_DIR,
+    demoSeed: mode === 'mock' && e.NODE_ENV !== 'test' && e.DEMO_SEED === 'on',
     dataverse: {
       mode,
       url: e.DATAVERSE_URL?.replace(/\/$/, ''),

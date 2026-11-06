@@ -1,0 +1,5 @@
+relationship ad81d598-4d9f-4a68-a49f-6ef889a8e9e1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: SanXuatCaoThe.Ngày
+	toColumn: LocalDateTable_c34e5959-e2a2-4443-85a1-8f99c37bc990.Date
+

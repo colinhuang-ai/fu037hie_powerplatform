@@ -1,0 +1,169 @@
+table SanXuatCaoThe
+	lineageTag: 37d452b1-b81f-4cea-92c1-cc7963a4c0a5
+
+	column Ngày
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 82ffcc68-05ca-4a72-a265-edf5c93ba01f
+		summarizeBy: none
+		sourceColumn: Ngày
+
+		variation Variation
+			isDefault
+			relationship: ad81d598-4d9f-4a68-a49f-6ef889a8e9e1
+			defaultHierarchy: LocalDateTable_c34e5959-e2a2-4443-85a1-8f99c37bc990.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Thiết bị'
+		dataType: string
+		lineageTag: a58712f5-4c78-4cb6-bba4-0d8ed76609a6
+		summarizeBy: none
+		sourceColumn: Thiết bị
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cấp điện áp (kV)'
+		dataType: int64
+		formatString: 0
+		lineageTag: c1299736-c4b1-4805-9d26-262507230aeb
+		summarizeBy: sum
+		sourceColumn: Cấp điện áp (kV)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dây chuyền'
+		dataType: string
+		lineageTag: ac9ba95e-a220-49b7-acc1-f6a2f85d9eec
+		summarizeBy: none
+		sourceColumn: Dây chuyền
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SL kế hoạch'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9eb74acb-f29e-417c-8eac-08f33c9e32d3
+		summarizeBy: sum
+		sourceColumn: SL kế hoạch
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SL thực tế'
+		dataType: int64
+		formatString: 0
+		lineageTag: 509e7d18-c729-4351-b9ff-d5ab5a5ba942
+		summarizeBy: sum
+		sourceColumn: SL thực tế
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SP lỗi'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8dc8fcf1-b93c-48c9-9ec5-3989edda8efb
+		summarizeBy: sum
+		sourceColumn: SP lỗi
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SP đạt'
+		dataType: int64
+		formatString: 0
+		lineageTag: bf0b3396-bf78-4990-b557-6603c9bd5500
+		summarizeBy: sum
+		sourceColumn: SP đạt
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Giờ vận hành'
+		dataType: double
+		lineageTag: 8e7d350d-6221-43ee-b760-6e18fe05b76b
+		summarizeBy: sum
+		sourceColumn: Giờ vận hành
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Giờ dừng máy'
+		dataType: double
+		lineageTag: 4aa6d12b-afab-4896-9ce5-e79f1684f2c8
+		summarizeBy: sum
+		sourceColumn: Giờ dừng máy
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Điện năng (kWh)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2cd086c2-f542-4f7c-959c-9ed6742916f2
+		summarizeBy: sum
+		sourceColumn: Điện năng (kWh)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Giờ công'
+		dataType: double
+		lineageTag: d33e75ad-194c-453e-9347-f44a78f9ed29
+		summarizeBy: sum
+		sourceColumn: Giờ công
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Hoàn thành KH'
+		dataType: double
+		lineageTag: a6b2620f-8bd2-4f24-a608-dd85bab3f886
+		summarizeBy: sum
+		sourceColumn: Hoàn thành KH
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Tỷ lệ lỗi'
+		dataType: double
+		lineageTag: 476b79ad-ee51-401c-a4c3-0fcd4d702a21
+		summarizeBy: sum
+		sourceColumn: Tỷ lệ lỗi
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Năng suất (SP/giờ)'
+		dataType: double
+		lineageTag: e6f88eec-df45-47b0-aa0d-913632e219ff
+		summarizeBy: sum
+		sourceColumn: Năng suất (SP/giờ)
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Trạng thái'
+		dataType: string
+		lineageTag: 7c1227b5-10ba-42fa-9ed2-0c4b1ed6a5c7
+		summarizeBy: none
+		sourceColumn: Trạng thái
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SanXuatCaoThe = m
+		mode: import
+		source =
+				let
+				  Source = Excel.Workbook(File.Contents("D:\Training\2026-08_1dataplatform_hieu\Manufacturing.xlsx"), null, true),
+				  #"Navigation 1" = Source{[Item = "SanXuatCaoThe", Kind = "Table"]}[Data],
+				  #"Changed column type" = Table.TransformColumnTypes(#"Navigation 1", {{"Ngày", type date}, {"Thiết bị", type text}, {"Cấp điện áp (kV)", Int64.Type}, {"Dây chuyền", type text}, {"SL kế hoạch", Int64.Type}, {"SL thực tế", Int64.Type}, {"SP lỗi", Int64.Type}, {"SP đạt", Int64.Type}, {"Giờ vận hành", type number}, {"Giờ dừng máy", type number}, {"Điện năng (kWh)", Int64.Type}, {"Giờ công", type number}, {"Hoàn thành KH", type number}, {"Tỷ lệ lỗi", type number}, {"Năng suất (SP/giờ)", type number}, {"Trạng thái", type text}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+
