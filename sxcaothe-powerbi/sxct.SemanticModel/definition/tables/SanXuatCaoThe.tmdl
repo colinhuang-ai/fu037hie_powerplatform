@@ -1,6 +1,246 @@
 table SanXuatCaoThe
 	lineageTag: 37d452b1-b81f-4cea-92c1-cc7963a4c0a5
 
+	measure 'SP thực tế' = SUM('SanXuatCaoThe'[SL thực tế])
+		formatString: #,0
+		displayFolder: Số đo
+		lineageTag: 76886072-dfc0-4588-afb0-6925365d6263
+
+	measure 'SP mỗi ngày' = DIVIDE([SP thực tế], DISTINCTCOUNT('SanXuatCaoThe'[Ngày]))
+		formatString: #,0.0
+		displayFolder: Số đo
+		lineageTag: f758c888-314c-470d-a200-472a588e4f0f
+
+	measure '% Hoàn thành KH' =
+			DIVIDE(
+			    CALCULATE(SUM('SanXuatCaoThe'[SL thực tế]), 'SanXuatCaoThe'[Hoàn thành KH] <= 1.5),
+			    CALCULATE(SUM('SanXuatCaoThe'[SL kế hoạch]), 'SanXuatCaoThe'[Hoàn thành KH] <= 1.5)
+			)
+		formatString: 0.0%
+		displayFolder: Số đo
+		lineageTag: 9325e7fe-0f05-494a-bb9e-3637c85f0870
+
+	measure '% Lỗi' = DIVIDE(SUM('SanXuatCaoThe'[SP lỗi]), SUM('SanXuatCaoThe'[SL thực tế]))
+		formatString: 0.00%
+		displayFolder: Số đo
+		lineageTag: d0b1fbf9-429e-4e48-83b0-3796b15ff9bc
+
+	measure '% Sẵn sàng máy' = DIVIDE(SUM('SanXuatCaoThe'[Giờ vận hành]), SUM('SanXuatCaoThe'[Giờ vận hành]) + SUM('SanXuatCaoThe'[Giờ dừng máy]))
+		formatString: 0.0%
+		displayFolder: Số đo
+		lineageTag: 0f102d75-cbc5-4227-bde9-6164e9aac7f5
+
+	measure 'SP trên giờ công' = DIVIDE([SP thực tế], SUM('SanXuatCaoThe'[Giờ công]))
+		formatString: 0.00
+		displayFolder: Số đo
+		lineageTag: 8d188a79-4f17-4bcf-a50b-76ca658da80d
+
+	measure 'kWh trên SP' = DIVIDE(SUM('SanXuatCaoThe'[Điện năng (kWh)]), [SP thực tế])
+		formatString: 0.0
+		displayFolder: Số đo
+		lineageTag: 39daf3b1-adc1-4a91-8fc9-97bfbd58b286
+
+	measure 'KPI SP thực tế' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			RETURN CALCULATE([SP thực tế], 'SanXuatCaoThe'[Tháng số] = m)
+		formatString: #,0
+		displayFolder: Số đo
+		lineageTag: e9d7fe98-dd7a-42ee-b2af-cc629d392c30
+
+	measure 'Δ SP thực tế' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR cur = CALCULATE([SP mỗi ngày], 'SanXuatCaoThe'[Tháng số] = m)
+			VAR prv = CALCULATE([SP mỗi ngày], REMOVEFILTERS('SanXuatCaoThe'[Tháng]), 'SanXuatCaoThe'[Tháng số] = m - 1)
+			RETURN IF(ISBLANK(prv), BLANK(), DIVIDE(cur, prv) - 1)
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Số đo
+		lineageTag: 7486f66c-51e1-4c09-99fa-a2a683b6a2bc
+
+	measure 'Δ text SP thực tế' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR d = [Δ SP thực tế]
+			RETURN IF(ISBLANK(d), BLANK(), IF(d >= 0, "▲ +", "▼ −") & FORMAT(ABS(d), "0.0%", "vi-VN") & "/ngày so với T" & (m - 1))
+		displayFolder: Số đo
+		lineageTag: 4210e448-1aa0-4db4-9677-a943f14bdb17
+
+	measure 'Δ màu SP thực tế' =
+			VAR d = [Δ SP thực tế]
+			RETURN IF(d >= 0, "#1E8E5A", "#C0392B")
+		displayFolder: Số đo
+		lineageTag: 27ed59cb-b86e-476d-b893-1367e72e4c4d
+
+	measure 'KPI % Hoàn thành KH' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			RETURN CALCULATE([% Hoàn thành KH], 'SanXuatCaoThe'[Tháng số] = m)
+		formatString: 0.0%
+		displayFolder: Số đo
+		lineageTag: 8e558955-75fe-457f-b210-d262166e0fe7
+
+	measure 'Δ % Hoàn thành KH' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR cur = CALCULATE([% Hoàn thành KH], 'SanXuatCaoThe'[Tháng số] = m)
+			VAR prv = CALCULATE([% Hoàn thành KH], REMOVEFILTERS('SanXuatCaoThe'[Tháng]), 'SanXuatCaoThe'[Tháng số] = m - 1)
+			RETURN IF(ISBLANK(prv), BLANK(), cur - prv)
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: Số đo
+		lineageTag: b237a270-5660-4631-85df-5223e7555bbb
+
+	measure 'Δ text % Hoàn thành KH' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR d = [Δ % Hoàn thành KH]
+			RETURN IF(ISBLANK(d), BLANK(), IF(d >= 0, "▲ +", "▼ −") & FORMAT(ABS(d) * 100, "0.00", "vi-VN") & " pp" & " so với T" & (m - 1))
+		displayFolder: Số đo
+		lineageTag: bd91a9d8-8425-4429-8c12-4440553b93a1
+
+	measure 'Δ màu % Hoàn thành KH' =
+			VAR d = [Δ % Hoàn thành KH]
+			RETURN IF(d >= 0, "#1E8E5A", "#C0392B")
+		displayFolder: Số đo
+		lineageTag: 414d71ef-49c4-4bf0-b03e-a69daf08a82f
+
+	measure 'KPI % Lỗi' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			RETURN CALCULATE([% Lỗi], 'SanXuatCaoThe'[Tháng số] = m)
+		formatString: 0.00%
+		displayFolder: Số đo
+		lineageTag: c0b4f446-c25e-4d6a-a198-14688d80612e
+
+	measure 'Δ % Lỗi' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR cur = CALCULATE([% Lỗi], 'SanXuatCaoThe'[Tháng số] = m)
+			VAR prv = CALCULATE([% Lỗi], REMOVEFILTERS('SanXuatCaoThe'[Tháng]), 'SanXuatCaoThe'[Tháng số] = m - 1)
+			RETURN IF(ISBLANK(prv), BLANK(), cur - prv)
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: Số đo
+		lineageTag: 3c19a40b-0f3a-4271-b3b1-7fa8d48f4ca5
+
+	measure 'Δ text % Lỗi' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR d = [Δ % Lỗi]
+			RETURN IF(ISBLANK(d), BLANK(), IF(d >= 0, "▲ +", "▼ −") & FORMAT(ABS(d) * 100, "0.00", "vi-VN") & " pp" & " so với T" & (m - 1))
+		displayFolder: Số đo
+		lineageTag: 2ceefc50-e455-4d65-9a11-8dff5b084c03
+
+	measure 'Δ màu % Lỗi' =
+			VAR d = [Δ % Lỗi]
+			RETURN IF(d <= 0, "#1E8E5A", "#C0392B")
+		displayFolder: Số đo
+		lineageTag: 31da418e-239f-4bef-afa6-1697b71781ab
+
+	measure 'KPI % Sẵn sàng máy' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			RETURN CALCULATE([% Sẵn sàng máy], 'SanXuatCaoThe'[Tháng số] = m)
+		formatString: 0.0%
+		displayFolder: Số đo
+		lineageTag: d3849d5f-8ea9-4331-b3b7-dd367ce8443f
+
+	measure 'Δ % Sẵn sàng máy' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR cur = CALCULATE([% Sẵn sàng máy], 'SanXuatCaoThe'[Tháng số] = m)
+			VAR prv = CALCULATE([% Sẵn sàng máy], REMOVEFILTERS('SanXuatCaoThe'[Tháng]), 'SanXuatCaoThe'[Tháng số] = m - 1)
+			RETURN IF(ISBLANK(prv), BLANK(), cur - prv)
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: Số đo
+		lineageTag: b3fe1c35-9eb9-4373-bcfe-cc503f375d38
+
+	measure 'Δ text % Sẵn sàng máy' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR d = [Δ % Sẵn sàng máy]
+			RETURN IF(ISBLANK(d), BLANK(), IF(d >= 0, "▲ +", "▼ −") & FORMAT(ABS(d) * 100, "0.00", "vi-VN") & " pp" & " so với T" & (m - 1))
+		displayFolder: Số đo
+		lineageTag: 5149fb99-fd4f-488e-9663-93e64c803a0a
+
+	measure 'Δ màu % Sẵn sàng máy' =
+			VAR d = [Δ % Sẵn sàng máy]
+			RETURN IF(d >= 0, "#1E8E5A", "#C0392B")
+		displayFolder: Số đo
+		lineageTag: 230ab1dd-ae77-4593-bb47-6b2b7bea9fb5
+
+	measure 'KPI SP trên giờ công' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			RETURN CALCULATE([SP trên giờ công], 'SanXuatCaoThe'[Tháng số] = m)
+		formatString: 0.00
+		displayFolder: Số đo
+		lineageTag: 683f3984-9361-4fa4-9686-dc2b063b588f
+
+	measure 'Δ SP trên giờ công' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR cur = CALCULATE([SP trên giờ công], 'SanXuatCaoThe'[Tháng số] = m)
+			VAR prv = CALCULATE([SP trên giờ công], REMOVEFILTERS('SanXuatCaoThe'[Tháng]), 'SanXuatCaoThe'[Tháng số] = m - 1)
+			RETURN IF(ISBLANK(prv), BLANK(), DIVIDE(cur, prv) - 1)
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Số đo
+		lineageTag: 67cb69e5-9fc1-4054-a7a1-a3b588166444
+
+	measure 'Δ text SP trên giờ công' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR d = [Δ SP trên giờ công]
+			RETURN IF(ISBLANK(d), BLANK(), IF(d >= 0, "▲ +", "▼ −") & FORMAT(ABS(d), "0.0%", "vi-VN") & " so với T" & (m - 1))
+		displayFolder: Số đo
+		lineageTag: 82cb5998-a56d-4de3-b16e-9b3c7fa30a88
+
+	measure 'Δ màu SP trên giờ công' =
+			VAR d = [Δ SP trên giờ công]
+			RETURN IF(d >= 0, "#1E8E5A", "#C0392B")
+		displayFolder: Số đo
+		lineageTag: b4be2c46-05cd-431d-b957-495531202636
+
+	measure 'KPI kWh trên SP' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			RETURN CALCULATE([kWh trên SP], 'SanXuatCaoThe'[Tháng số] = m)
+		formatString: 0.0
+		displayFolder: Số đo
+		lineageTag: cec76754-c75a-414b-a5ce-830dc3f3fdbc
+
+	measure 'Δ kWh trên SP' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR cur = CALCULATE([kWh trên SP], 'SanXuatCaoThe'[Tháng số] = m)
+			VAR prv = CALCULATE([kWh trên SP], REMOVEFILTERS('SanXuatCaoThe'[Tháng]), 'SanXuatCaoThe'[Tháng số] = m - 1)
+			RETURN IF(ISBLANK(prv), BLANK(), DIVIDE(cur, prv) - 1)
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Số đo
+		lineageTag: 69f6a707-a21f-40c6-87bc-2f5e8651de96
+
+	measure 'Δ text kWh trên SP' =
+			VAR m = MAX('SanXuatCaoThe'[Tháng số])
+			VAR d = [Δ kWh trên SP]
+			RETURN IF(ISBLANK(d), BLANK(), IF(d >= 0, "▲ +", "▼ −") & FORMAT(ABS(d), "0.0%", "vi-VN") & " so với T" & (m - 1))
+		displayFolder: Số đo
+		lineageTag: 6acdc84d-458b-435e-8513-0a525cfee9f0
+
+	measure 'Δ màu kWh trên SP' =
+			VAR d = [Δ kWh trên SP]
+			RETURN IF(d <= 0, "#1E8E5A", "#C0392B")
+		displayFolder: Số đo
+		lineageTag: 163ccb55-75c2-40fc-a605-e57b757e541c
+
+	measure 'Tiêu đề bảng thiết bị' = "Chỉ số theo thiết bị, tháng " & MAX('SanXuatCaoThe'[Tháng số])
+		displayFolder: Số đo
+		lineageTag: f6955b74-1383-4a45-a9f1-bf50127b77f7
+
+	measure 'Tiêu đề lỗi thiết bị' = "Tỷ lệ lỗi theo thiết bị, tháng " & MAX('SanXuatCaoThe'[Tháng số])
+		displayFolder: Số đo
+		lineageTag: ca9f0cad-4feb-4232-9ec0-df82b96c6e17
+
+	measure 'KH bảng' =
+			VAR x = [KPI % Hoàn thành KH]
+			RETURN IF(ISBLANK(x), BLANK(), IF(x >= 0.97, "▲ ", "▼ ") & FORMAT(x, "0.0%", "vi-VN"))
+		displayFolder: Số đo
+		lineageTag: d83ca943-3a71-4e46-80cc-fab2cedf5532
+
+	measure 'KH bảng màu' =
+			VAR x = [KPI % Hoàn thành KH]
+			RETURN IF(x >= 0.97, "#1E8E5A", "#C0392B")
+		displayFolder: Số đo
+		lineageTag: d77aee6a-2fe7-4d1a-8b1e-e3fd89d1953d
+
+	measure 'Lỗi nền' =
+			VAR x = [KPI % Lỗi]
+			VAR tot = CALCULATE([KPI % Lỗi], ALLSELECTED('SanXuatCaoThe'[Thiết bị]))
+			RETURN IF(x > tot, "#FBE3E3", "#FFFFFF")
+		displayFolder: Số đo
+		lineageTag: cc7efe88-ca55-49c9-8a79-be72ad7cf5c5
+
 	column Ngày
 		dataType: dateTime
 		formatString: Long Date
@@ -154,6 +394,38 @@ table SanXuatCaoThe
 		sourceColumn: Trạng thái
 
 		annotation SummarizationSetBy = Automatic
+
+	column 'Tháng số' = MONTH('SanXuatCaoThe'[Ngày])
+		dataType: int64
+		formatString: 0
+		lineageTag: 14633074-2d16-4bc9-bb19-deebf7894860
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tháng = "T" & MONTH('SanXuatCaoThe'[Ngày])
+		dataType: string
+		lineageTag: bb30a130-2615-431c-a34e-06c5ee443cb5
+		summarizeBy: none
+		sortByColumn: 'Tháng số'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Nhãn điện áp' = 'SanXuatCaoThe'[Cấp điện áp (kV)] & " kV"
+		dataType: string
+		lineageTag: b8a0a71c-07ae-4167-b829-bb0847abcd0e
+		summarizeBy: none
+		sortByColumn: 'Cấp điện áp (kV)'
+
+		annotation SummarizationSetBy = Automatic
+
+	column GVHTB = [Giờ vận hành]
+		lineageTag: c30dd351-d4d0-4759-b695-349586deeb2c
+		summarizeBy: average
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition SanXuatCaoThe = m
 		mode: import

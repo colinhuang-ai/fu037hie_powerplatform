@@ -1,2 +1,1322 @@
 cultureInfo en-US
 
+	linguisticMetadata =
+			{
+			  "Version": "4.1.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "san_xuat_cao_the": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "san xuat cao the": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "SanXuatCaoThe": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.ngày": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Ngày"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ngày": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "san_xuat_cao_the.ngày.date_hierarchy": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "VariationSource": "Ngày",
+			          "VariationSet": "Variation",
+			          "Hierarchy": "Date Hierarchy"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ngày date hierarchy": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "date hierarchy": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "san_xuat_cao_the.ngày.year": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "VariationSource": "Ngày",
+			          "VariationSet": "Variation",
+			          "Hierarchy": "Date Hierarchy",
+			          "HierarchyLevel": "Year"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ngày year": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "year": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "ngày yr": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "yr": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "san_xuat_cao_the.ngày.quarter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "VariationSource": "Ngày",
+			          "VariationSet": "Variation",
+			          "Hierarchy": "Date Hierarchy",
+			          "HierarchyLevel": "Quarter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ngày quarter": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "quarter": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "ngày qtr": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.833
+			          }
+			        },
+			        {
+			          "qtr": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.818
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "san_xuat_cao_the.ngày.month": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "VariationSource": "Ngày",
+			          "VariationSet": "Variation",
+			          "Hierarchy": "Date Hierarchy",
+			          "HierarchyLevel": "Month"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ngày month": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "month": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "ngày mth": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "mth": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "san_xuat_cao_the.ngày.day": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "VariationSource": "Ngày",
+			          "VariationSet": "Variation",
+			          "Hierarchy": "Date Hierarchy",
+			          "HierarchyLevel": "Day"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ngày day": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "day": {
+			            "State": "Generated"
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "san_xuat_cao_the.thiết_bị": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Thiết bị"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "thiết bị": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.cấp_điện_áp_kV": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Cấp điện áp (kV)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "cấp điện áp (kV)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "cấp điện áp": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.dây_chuyền": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Dây chuyền"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "dây chuyền": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.SL_kế_hoạch": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "SL kế hoạch"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "SL kế hoạch": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.SL_thực_tế": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "SL thực tế"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "SL thực tế": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.SP_lỗi": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "SP lỗi"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "SP lỗi": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.SP_đạt": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "SP đạt"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "SP đạt": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.giờ_vận_hành": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Giờ vận hành"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "giờ vận hành": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.giờ_dừng_máy": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Giờ dừng máy"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "giờ dừng máy": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.điện_năng_kWh": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Điện năng (kWh)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "điện năng (kWh)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "điện năng": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.giờ_công": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Giờ công"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "giờ công": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.hoàn_thành_KH": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Hoàn thành KH"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "hoàn thành KH": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.tỷ_lệ_lỗi": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Tỷ lệ lỗi"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "tỷ lệ lỗi": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.năng_suất_SP_giờ": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Năng suất (SP/giờ)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "năng suất (SP/giờ)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "năng suất": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "năng suất (SP": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "năng suất ( SP giờ )": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "giờ)": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the.trạng_thái": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "Trạng thái"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "trạng thái": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "sanxuatcaothe.kpi_sp_thực_tế": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "KPI SP thực tế"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "SP thực tế": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sanxuatcaothe.kh_bảng": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "KH bảng"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Hoàn thành KH": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sanxuatcaothe.kpi__lỗi": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "KPI % Lỗi"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Tỷ lệ lỗi": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sanxuatcaothe.kpi__sẵn_sàng_máy": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "KPI % Sẵn sàng máy"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Sẵn sàng máy": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sanxuatcaothe.kpi_sp_trên_giờ_công": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SanXuatCaoThe",
+			          "ConceptualProperty": "KPI SP trên giờ công"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "SP/giờ công": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  },
+			  "Relationships": {
+			    "san_xuat_cao_the_has_ngày": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.ngày": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.ngày"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_ngàys"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_thiết_bị": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.thiết_bị": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.thiết_bị"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.thiết_bị"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_thiết_bị"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_cấp_điện_áp_kV": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.cấp_điện_áp_kV": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.cấp_điện_áp_kV"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.cấp_điện_áp_kV"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_cấp_điện_áp_kV"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_dây_chuyền": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.dây_chuyền": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.dây_chuyền"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.dây_chuyền"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_dây_chuyềns"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_SL_kế_hoạch": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.SL_kế_hoạch": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.SL_kế_hoạch"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.SL_kế_hoạch"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_SL_kế_hoạches"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_SL_thực_tế": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.SL_thực_tế": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.SL_thực_tế"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.SL_thực_tế"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_SL_thực_tế"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_SP_lỗi": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.SP_lỗi": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.SP_lỗi"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.SP_lỗi"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_SP_lỗis"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_SP_đạt": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.SP_đạt": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.SP_đạt"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.SP_đạt"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_SP_đạts"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_giờ_vận_hành": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.giờ_vận_hành": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.giờ_vận_hành"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.giờ_vận_hành"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_giờ_vận_hànhs"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_giờ_dừng_máy": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.giờ_dừng_máy": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.giờ_dừng_máy"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.giờ_dừng_máy"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_giờ_dừng_máys"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_điện_năng_kWh": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.điện_năng_kWh": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.điện_năng_kWh"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.điện_năng_kWh"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_điện_năng_kWh"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_giờ_công": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.giờ_công": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.giờ_công"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.giờ_công"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_giờ_côngs"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_hoàn_thành_KH": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.hoàn_thành_KH": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.hoàn_thành_KH"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.hoàn_thành_KH"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_hoàn_thành_KHs"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_tỷ_lệ_lỗi": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.tỷ_lệ_lỗi": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.tỷ_lệ_lỗi"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.tỷ_lệ_lỗi"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_tỷ_lệ_lỗis"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_năng_suất_SP_giờ": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.năng_suất_SP_giờ": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.năng_suất_SP_giờ"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.năng_suất_SP_giờ"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_năng_suất_SP_giờ"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_has_trạng_thái": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the"
+			          }
+			        },
+			        "san_xuat_cao_the.trạng_thái": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.trạng_thái"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.trạng_thái"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "san_xuat_cao_the_have_trạng_tháis"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_ngày_has_date_hierarchy": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the.ngày": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày"
+			          }
+			        },
+			        "san_xuat_cao_the.ngày.date_hierarchy": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày.date_hierarchy"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the.ngày"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.ngày.date_hierarchy"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ngàys_have_ngày_date_hierarchies"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_ngày_date_hierarchy_has_san_xuat_cao_the_ngày_year": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the.ngày.date_hierarchy": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày.date_hierarchy"
+			          }
+			        },
+			        "san_xuat_cao_the.ngày.year": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày.year"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the.ngày.date_hierarchy"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.ngày.year"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ngày_date_hierarchies_have_ngày_years"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_ngày_date_hierarchy_has_san_xuat_cao_the_ngày_quarter": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the.ngày.date_hierarchy": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày.date_hierarchy"
+			          }
+			        },
+			        "san_xuat_cao_the.ngày.quarter": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày.quarter"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the.ngày.date_hierarchy"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.ngày.quarter"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ngày_date_hierarchies_have_ngày_quarters"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_ngày_date_hierarchy_has_san_xuat_cao_the_ngày_month": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the.ngày.date_hierarchy": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày.date_hierarchy"
+			          }
+			        },
+			        "san_xuat_cao_the.ngày.month": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày.month"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the.ngày.date_hierarchy"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.ngày.month"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ngày_date_hierarchies_have_ngày_months"
+			        }
+			      ]
+			    },
+			    "san_xuat_cao_the_ngày_date_hierarchy_has_san_xuat_cao_the_ngày_day": {
+			      "Binding": {
+			        "ConceptualEntity": "SanXuatCaoThe"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "san_xuat_cao_the.ngày.date_hierarchy": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày.date_hierarchy"
+			          }
+			        },
+			        "san_xuat_cao_the.ngày.day": {
+			          "Target": {
+			            "Entity": "san_xuat_cao_the.ngày.day"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "san_xuat_cao_the.ngày.date_hierarchy"
+			            },
+			            "Object": {
+			              "Role": "san_xuat_cao_the.ngày.day"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ngày_date_hierarchies_have_ngày_days"
+			        }
+			      ]
+			    }
+			  },
+			  "Agents": {
+			    "Internal": {
+			      "Version": "1.1.0"
+			    }
+			  }
+			}
+		contentType: json
+

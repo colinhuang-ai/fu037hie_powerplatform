@@ -1,0 +1,99 @@
+table '`samples` `tpch` `part`'
+	lineageTag: 7cec4c61-d8ad-4e74-a9e6-cd15e0290a5b
+
+	column p_partkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: bcf46224-c016-48a0-8802-32d58874157a
+		summarizeBy: sum
+		sourceColumn: p_partkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column p_name
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: ceb93fcf-484c-4242-8d89-63bd75514885
+		summarizeBy: none
+		sourceColumn: p_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column p_mfgr
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 253ee89a-efc0-4ff4-a416-7b2ae664356c
+		summarizeBy: none
+		sourceColumn: p_mfgr
+
+		annotation SummarizationSetBy = Automatic
+
+	column p_brand
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 759768e1-bc17-49c0-a520-cb067815e7e7
+		summarizeBy: none
+		sourceColumn: p_brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column p_type
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: ad63680c-d46d-4f06-aadf-505ec56d2988
+		summarizeBy: none
+		sourceColumn: p_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column p_size
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f1fe6b3a-5825-4af8-ad0a-59c67bffeacd
+		summarizeBy: sum
+		sourceColumn: p_size
+
+		annotation SummarizationSetBy = Automatic
+
+	column p_container
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 9570a670-0486-47d3-bc5f-7f72f66e43ec
+		summarizeBy: none
+		sourceColumn: p_container
+
+		annotation SummarizationSetBy = Automatic
+
+	column p_retailprice
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 8dc58e95-7152-4ac4-8efe-cf9e8b532944
+		summarizeBy: sum
+		sourceColumn: p_retailprice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column p_comment
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: cc89528e-5b46-4636-8d60-26e527effa00
+		summarizeBy: none
+		sourceColumn: p_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '`samples` `tpch` `part`' = m
+		mode: directQuery
+		source =
+				let
+				    Source = DatabricksMultiCloud.Catalogs("dbc-d6f872f5-072c.cloud.databricks.com", "/sql/1.0/warehouses/95c23cd9fa4f0ab5", [Catalog = "samples", Database = "tpch"]),
+				    part_tpch_samples = Source{[Item="part",Schema="tpch",Catalog="samples"]}[Data]
+				in
+				    part_tpch_samples
+
+	annotation PBI_ResultType = Table
+

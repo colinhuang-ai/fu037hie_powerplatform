@@ -1,0 +1,52 @@
+table '`samples` `tpch` `nation`'
+	lineageTag: 473b766d-72f6-4386-a956-db1c253ea908
+
+	column n_nationkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3a32b3de-5c2f-49cd-95bf-63e93d3d3a32
+		summarizeBy: sum
+		sourceColumn: n_nationkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_name
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: cedc1d5a-6f78-4f5f-8bb8-a6cca246a6a7
+		summarizeBy: none
+		sourceColumn: n_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_regionkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: af883f43-f098-40ef-b9c9-8f497e97ba26
+		summarizeBy: sum
+		sourceColumn: n_regionkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_comment
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 63761d1f-9cbc-42a4-99b4-c305022d934f
+		summarizeBy: none
+		sourceColumn: n_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '`samples` `tpch` `nation`' = m
+		mode: directQuery
+		source =
+				let
+				    Source = DatabricksMultiCloud.Catalogs("dbc-d6f872f5-072c.cloud.databricks.com", "/sql/1.0/warehouses/95c23cd9fa4f0ab5", [Catalog = "samples", Database = "tpch"]),
+				    nation_tpch_samples = Source{[Item="nation",Schema="tpch",Catalog="samples"]}[Data]
+				in
+				    nation_tpch_samples
+
+	annotation PBI_ResultType = Table
+

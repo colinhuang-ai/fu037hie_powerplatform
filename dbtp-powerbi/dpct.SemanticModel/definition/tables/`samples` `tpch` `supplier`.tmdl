@@ -1,0 +1,81 @@
+table '`samples` `tpch` `supplier`'
+	lineageTag: 5a52dc9e-be03-4c0b-b54a-7e173d9c43ec
+
+	column s_suppkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d93d7d31-bfde-40e2-a6c6-48cdd0301b0e
+		summarizeBy: sum
+		sourceColumn: s_suppkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column s_name
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: c101df25-5c29-49ce-9e5f-07098ade9f8a
+		summarizeBy: none
+		sourceColumn: s_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column s_address
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: f67e8142-c043-4efb-8715-733b4391df41
+		summarizeBy: none
+		sourceColumn: s_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column s_nationkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e9e95eaa-0567-4212-883f-b0b3343d7421
+		summarizeBy: sum
+		sourceColumn: s_nationkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column s_phone
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: dcb1cb10-54a0-43b6-b075-f02e35748025
+		summarizeBy: none
+		sourceColumn: s_phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column s_acctbal
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 21572b87-1452-4fb3-8f23-39f011584b8d
+		summarizeBy: sum
+		sourceColumn: s_acctbal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column s_comment
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: b275a663-f5e9-48aa-924c-42995269fcd7
+		summarizeBy: none
+		sourceColumn: s_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '`samples` `tpch` `supplier`' = m
+		mode: directQuery
+		source =
+				let
+				    Source = DatabricksMultiCloud.Catalogs("dbc-d6f872f5-072c.cloud.databricks.com", "/sql/1.0/warehouses/95c23cd9fa4f0ab5", [Catalog = "samples", Database = "tpch"]),
+				    supplier_tpch_samples = Source{[Item="supplier",Schema="tpch",Catalog="samples"]}[Data]
+				in
+				    supplier_tpch_samples
+
+	annotation PBI_ResultType = Exception
+

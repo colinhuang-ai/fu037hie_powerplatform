@@ -1,0 +1,90 @@
+table '`samples` `tpch` `customer`'
+	lineageTag: efed1ebb-7e6f-4610-b24a-9efe6edff861
+
+	column c_custkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 103957ea-ff7b-426e-ab40-76dddf34fb15
+		summarizeBy: sum
+		sourceColumn: c_custkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_name
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 8d123bcc-8650-4db3-bd7a-6bb85605db23
+		summarizeBy: none
+		sourceColumn: c_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_address
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 9d26ee2d-9069-42c2-97ad-55f02707081a
+		summarizeBy: none
+		sourceColumn: c_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_nationkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 771b2d3a-77ff-4b6f-a477-b3649b913e0c
+		summarizeBy: sum
+		sourceColumn: c_nationkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_phone
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 8ab0355a-51b4-4b38-a974-8edbcff7961f
+		summarizeBy: none
+		sourceColumn: c_phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_acctbal
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 2a2673f6-5b42-43fd-a26b-ea3c65652700
+		summarizeBy: sum
+		sourceColumn: c_acctbal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column c_mktsegment
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: bd264378-7c39-4313-97ac-b5a58eb4ed9c
+		summarizeBy: none
+		sourceColumn: c_mktsegment
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_comment
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: bbec40b0-754b-414d-8c3d-dbec8f7b191b
+		summarizeBy: none
+		sourceColumn: c_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '`samples` `tpch` `customer`' = m
+		mode: directQuery
+		source =
+				let
+				    Source = DatabricksMultiCloud.Catalogs("dbc-d6f872f5-072c.cloud.databricks.com", "/sql/1.0/warehouses/95c23cd9fa4f0ab5", [Catalog = "samples", Database = "tpch"]),
+				    customer_tpch_samples = Source{[Item="customer",Schema="tpch",Catalog="samples"]}[Data]
+				in
+				    customer_tpch_samples
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,42 @@
+table '`samples` `tpch` `region`'
+	lineageTag: c386e958-c8e7-4063-b4bf-af1384a96da4
+
+	column r_regionkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: bfd56cf2-8dfb-4f42-b29a-b4b34fdb7034
+		summarizeBy: sum
+		sourceColumn: r_regionkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column r_name
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 90ad2303-7984-4f6b-a9e1-88f796215709
+		summarizeBy: none
+		sourceColumn: r_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column r_comment
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 9da90436-43ff-4fa7-b441-3cdc93cdd2c6
+		summarizeBy: none
+		sourceColumn: r_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '`samples` `tpch` `region`' = m
+		mode: directQuery
+		source =
+				let
+				    Source = DatabricksMultiCloud.Catalogs("dbc-d6f872f5-072c.cloud.databricks.com", "/sql/1.0/warehouses/95c23cd9fa4f0ab5", [Catalog = "samples", Database = "tpch"]),
+				    region_tpch_samples = Source{[Item="region",Schema="tpch",Catalog="samples"]}[Data]
+				in
+				    region_tpch_samples
+
+	annotation PBI_ResultType = Exception
+

@@ -1,0 +1,179 @@
+table '`samples` `tpch` `lineitem`'
+	lineageTag: af6cb8ec-0bc4-4db0-abb8-f08c469ce83a
+
+	column l_orderkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 7cb7985f-1d49-4351-8f95-f1bf1c6c408c
+		summarizeBy: sum
+		sourceColumn: l_orderkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_partkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a1d8157e-c650-4d66-b461-bc0665029f5f
+		summarizeBy: sum
+		sourceColumn: l_partkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_suppkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: c919b057-9bae-4855-aa17-80f96314899a
+		summarizeBy: sum
+		sourceColumn: l_suppkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_linenumber
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 19f5e4c6-c268-4ce3-818f-7985bacef707
+		summarizeBy: sum
+		sourceColumn: l_linenumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_quantity
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: bda5e1de-d3c4-45ee-81d2-a1d0244bff6c
+		summarizeBy: sum
+		sourceColumn: l_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column l_extendedprice
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: bf9cffda-21ac-4a54-a4b2-15c74c7f8000
+		summarizeBy: sum
+		sourceColumn: l_extendedprice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column l_discount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 88b537fa-89ca-43de-a32f-bb3c53885ebb
+		summarizeBy: sum
+		sourceColumn: l_discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column l_tax
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 9fc74e86-3c40-48f9-a2a5-99668ee5b58a
+		summarizeBy: sum
+		sourceColumn: l_tax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column l_returnflag
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 4ccb28e1-5399-4b97-b42f-e3773d71c5fc
+		summarizeBy: none
+		sourceColumn: l_returnflag
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_linestatus
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: ed978738-6cf9-4fae-b745-05d83f3d7a69
+		summarizeBy: none
+		sourceColumn: l_linestatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_shipdate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 2f80e111-2661-4bb9-976b-867bdf01d8fc
+		summarizeBy: none
+		sourceColumn: l_shipdate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column l_commitdate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 9781f248-bf43-439f-a468-6b05f3678422
+		summarizeBy: none
+		sourceColumn: l_commitdate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column l_receiptdate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 4dbfa48e-8e3d-4a47-bb80-e928d8e027b4
+		summarizeBy: none
+		sourceColumn: l_receiptdate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column l_shipinstruct
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: a4f2c783-9e5f-4de8-a787-c962d2ec9291
+		summarizeBy: none
+		sourceColumn: l_shipinstruct
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_shipmode
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 9fd913bb-5179-442c-8beb-41736cc40c1d
+		summarizeBy: none
+		sourceColumn: l_shipmode
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_comment
+		dataType: string
+		sourceProviderType: nvarchar(65535)
+		lineageTag: 1aab6d75-ff52-4529-a0e1-cb3a87e686b4
+		summarizeBy: none
+		sourceColumn: l_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '`samples` `tpch` `lineitem`' = m
+		mode: directQuery
+		source =
+				let
+				    Source = DatabricksMultiCloud.Catalogs("dbc-d6f872f5-072c.cloud.databricks.com", "/sql/1.0/warehouses/95c23cd9fa4f0ab5", [Catalog = "samples", Database = "tpch"]),
+				    lineitem_tpch_samples = Source{[Item="lineitem",Schema="tpch",Catalog="samples"]}[Data]
+				in
+				    lineitem_tpch_samples
+
+	annotation PBI_ResultType = Table
+
